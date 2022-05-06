@@ -37,19 +37,19 @@
           v-card(flat="", color="#DDD0D0")
             v-row.d-flex.justify-end
               v-card.ma-6.rounded-xl.text-center(
-                v-click-outside="onClickOutside",
                 width="200",
                 height="200",
                 v-for="(items, indexRow) in item.product",
                 :key="indexRow",
                 @click="clickHandler(Tabindex, indexRow)",
-                color="#2d3436"
+
               )
                 v-img.d-flex.image-content(
                   src="https://media.istockphoto.com/photos/cheese-burger-with-bacon-on-black-dark-background-picture-id1295796231?b=1&k=20&m=1295796231&s=170667a&w=0&h=lipbuWnWZE_-ScipwtVamsug7sd4j6hxiIUN0PkwWD8=",
                   height="200",
                   lazy-src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"
                 )
+
                   v-card-text.price0 {{ items.title }}
                   .price1
                     v-card-text.text-h6.card-text {{ items.price }} JD
