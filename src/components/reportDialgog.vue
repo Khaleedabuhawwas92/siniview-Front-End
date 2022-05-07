@@ -211,7 +211,7 @@ export default {
         this.purchase = result.data;
         this.purchase.forEach((element) => {
           element.createdAt = this.$moment(element.createdAt).format(
-            "DD/MM/YYYY  --- hh:mm:ss a"
+            "DD/MM/YYYY"
           );
           this.totalPurchase += element.value;
         });

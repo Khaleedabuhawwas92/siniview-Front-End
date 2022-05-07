@@ -68,6 +68,8 @@ module.exports = {
       local: {
         token: {
           type: "",
+          global: true,
+          maxAge: 1,
         },
         user: {
           property: "",
