@@ -69,7 +69,7 @@ module.exports = {
         token: {
           type: "",
           global: true,
-          maxAge: 1,
+          maxAge: 60 * 62 * 24,
         },
         user: {
           property: "",
