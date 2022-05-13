@@ -194,7 +194,7 @@
 <script >
 import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
 export default {
-  props: ["current"],
+  props: ["index"],
   data() {
     return {
       success: false,
