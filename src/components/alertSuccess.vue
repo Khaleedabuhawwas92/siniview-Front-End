@@ -7,7 +7,7 @@ v-alert.closeSuccess(
   shaped,
   text,
   type="success",
-  :value="success",
+  :value="showSuccessAlert",
   transition="slide-x-transition",
   @click="clickHandler"
 )
@@ -15,7 +15,12 @@ v-alert.closeSuccess(
 </template>
 <script>
 export default {
-  props: ["massege"],
+  props: ["massege","showSuccessAlert"],
+  data() {
+    return {
+      success: false,
+    };
+  },
   methods: {
     clickHandler(e) {
       this.$emit("toggle");

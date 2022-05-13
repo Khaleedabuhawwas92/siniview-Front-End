@@ -1,6 +1,6 @@
 <template lang="pug">
 .homePage
-  <navigationBar  :items="items" @toggle ="halooo" :price="price" />
+  <navigationBar  :items="items" @toggle="halooo" :price="price" />
   <alertSuccess massege="تمت العملية بنجاح"  @toggle="showSuccessAlert" v-if="success"/>
   v-tabs.commint(
     background-color="#e74c3c",
@@ -314,11 +314,12 @@ export default {
       if (this.rowData.length === 0) {
         this.tables.forEach((element, key) => {
           if (index1 === key) {
-            for (const index1 in element) {
+            for (const index in element) {
               if (Object.hasOwnProperty.call(element, key)) {
-                this.rowData.push(element[index1]);
-                this.price += element[index1].price;
-                console.log(element[index1]);
+                this.rowData.push(element[index]);
+                this.allIetms.push(element[index].title);
+                this.price += element[index].price;
+                console.log(element[index]);
               }
             }
           }
@@ -341,14 +342,12 @@ export default {
           }, 4000);
         } else {
           this.tables.push(this.rowData);
+          this.allIetms = [];
+          this.rowData = [];
+          console.log(this.tables.value);
         }
-      } else {
-        this.tables.map((elment, index) => {
-          if (index === indexof) {
-            console.log(elment[index]);
-          }
-        });
       }
+
       console.log("table", this.tables);
       (this.rowData = []), (this.dialogInvoice = false);
       this.price = 0;
@@ -367,13 +366,14 @@ export default {
       if (index >= 0) {
         var my_object = new Object({
           allIetms: this.allIetms.push(
-            this.items[Tabindex].product[index].title + "\n"
+            this.items[Tabindex].product[index].title
           ),
           discraption: this.items[Tabindex].product[index].discraption,
           additions: this.items[Tabindex].product[index].additions,
           title: this.items[Tabindex].product[index].title,
           price: Number(this.items[Tabindex].product[index].price),
-          sum:  this.price +
+          sum:
+            this.price +
             Number(this.items[Tabindex].product[index].price).toFixed(2),
           casher: this.loggedInUser.name,
         });

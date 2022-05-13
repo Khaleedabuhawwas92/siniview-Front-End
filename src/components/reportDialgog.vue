@@ -31,8 +31,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
           item-key="desserts",
           sort-by="createdAt",
           group-by="created_on",
-          dense,
-          dark
+          dense
         )
           template(v-slot:item.actions="{ item }")
             v-icon.mr-2(small="", @click="editItem(item)")
@@ -63,8 +62,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
               :items-per-page="10",
               item-key="expenses",
               sort-by="createdAt",
-              group-by="createdAt",
-              dark
+              group-by="createdAt"
             )
               template(v-slot:body.append)
                 tr
@@ -90,8 +88,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
               :items-per-page="10",
               item-key="purchase",
               sort-by="createdAt",
-              group-by="createdAt",
-              dark
+              group-by="createdAt"
             )
               template(v-slot:body.append)
                 tr
@@ -103,7 +100,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
             | اجمالي الكاش
           v-card-text
           template
-            v-expansion-panels(dark, focusable, multiple, tile)
+            v-expansion-panels(focusable, multiple, tile)
               v-expansion-panel(v-for="(item, i) in purchase", :key="i")
                 v-expansion-panel-header
                   | {{ item.createdAt }}

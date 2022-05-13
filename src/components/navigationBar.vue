@@ -33,7 +33,7 @@
 
     v-container#scroll-target.overflow-y-auto(style="height: 882px")
       v-tabs-items.pa-9(v-model="tab")
-        v-tab-item(v-for="(item, Tabindex) in items", :key="Tabindex")
+        v-tab-item(v-for="(item, index) in items", :key="index")
           v-card(flat="", color="#DDD0D0")
             v-row.d-flex.justify-end
               v-card.ma-6.rounded-xl.text-center(
@@ -41,8 +41,7 @@
                 height="200",
                 v-for="(items, indexRow) in item.product",
                 :key="indexRow",
-                @click="clickHandler(Tabindex, indexRow)",
-
+                @click="clickHandler(index, indexRow)",
               )
                 v-img.d-flex.image-content(
                   src="https://media.istockphoto.com/photos/cheese-burger-with-bacon-on-black-dark-background-picture-id1295796231?b=1&k=20&m=1295796231&s=170667a&w=0&h=lipbuWnWZE_-ScipwtVamsug7sd4j6hxiIUN0PkwWD8=",
@@ -63,7 +62,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["items", "price"],
+  props: ["items", "price","Tabindex","indexRow"],
   data() {
     return {
       ooo: "khaleed",
@@ -85,9 +84,9 @@ export default {
       this.active = true;
       alert("halwwooooo word");
     },
-    clickHandler(Tabindex, indexRow) {
+    clickHandler(index, indexRow) {
       // this.price = +1;
-      this.$emit("toggle", Tabindex, indexRow);
+      this.$emit("toggle", index, indexRow);
     },
     onClickOutside() {
       this.active = false;
