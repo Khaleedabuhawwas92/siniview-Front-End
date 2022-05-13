@@ -10,7 +10,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
       .con
         v-tabs(v-model="tab", centered, grow, dark, background-color="#2c3e50")
           v-tabs-slider(color="#e55039")
-          v-tab.text-h4.tabs-style(v-for="item in items2")
+          v-tab.text-h4.tabs-style(v-for="item in items2" :key="item")
             | {{ item }}
             v-icon(x-large="")
     v-tabs-items(v-model="tab")

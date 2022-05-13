@@ -9,7 +9,7 @@ v-dialog(
     v-toolbar(dark="", color="#012e48")
       v-btn(icon="", dark="", @click="clickHandler")
         v-icon mdi-close
-      v-toolbar-title {{loggedInUser.name}}
+      v-toolbar-title {{ loggedInUser.name }}
       v-spacer
       v-toolbar-items
         v-btn(dark="", text="", @click="clickHandler")
@@ -28,29 +28,12 @@ v-dialog(
     v-list(three-line="", subheader="")
       v-subheader General
       v-list-item
-        v-list-item-action
-          v-checkbox(v-model="notifications")
-        v-list-item-content
-          v-list-item-title Notifications
-          v-list-item-subtitle Notify me about updates to apps or games that I downloaded
-      v-list-item
-        v-list-item-action
-          v-checkbox(v-model="sound")
-        v-list-item-content
-          v-list-item-title Sound
-          v-list-item-subtitle Auto-update apps at any time. Data charges may apply
-      v-list-item
-        v-list-item-action
-          v-checkbox(v-model="widgets")
-        v-list-item-content
-          v-list-item-title Auto-add widgets
-          v-list-item-subtitle Automatically add home screen widgets
 </template>
 <script>
-import {  mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   props: ["dialogUser"],
-  computed:{
+  computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
   methods: {

@@ -153,7 +153,6 @@ export default {
 
 .buttons {
   display: grid;
-  alignment: right;
   direction: rtl;
 }
 
