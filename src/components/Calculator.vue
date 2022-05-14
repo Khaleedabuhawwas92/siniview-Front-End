@@ -110,7 +110,7 @@ export default {
       this.current =
         Number.parseFloat(this.current).toFixed(2) -
         (parseFloat(this.price) +
-          parseFloat(this.price) * parseFloat(this.tax));
+          parseFloat(this.price) * Number(this.tax).toFixed(2));
       this.dialog5 = true;
       console.log("......................................");
       console.log(this.allIetms);
