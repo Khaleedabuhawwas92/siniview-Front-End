@@ -20,6 +20,7 @@ const makeAppWindow = () => {
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: true, // turn off remote
       webSecurity: false,
+      frame: false,
 
       // preload: shell2.exec(__dirname, "src\\api\\backend.bat.js"),
     },

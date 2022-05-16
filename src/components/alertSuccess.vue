@@ -2,9 +2,7 @@
 v-alert.closeSuccess(
   dense,
   dismissible,
-  outlined,
   prominent,
-  shaped,
   text,
   type="success",
   :value="showSuccessAlert",

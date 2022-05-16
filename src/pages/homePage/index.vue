@@ -77,7 +77,7 @@
         .mr-4
           v-row.sum
             .col الضريبة
-            .col.num(v-model="price") {{ this.price * this.tax }}
+            .col.num(v-model="price") {{ this.price.toFixed(1) * this.tax.toFixed(1) }}
             .col &#x62F;.&#x627;
           v-row.sum
             .col المجموع
@@ -85,7 +85,7 @@
             .col &#x62F;.&#x627;
           v-row.sum
             .col الحساب الاجمالي
-            .col.num(v-model="price") {{ this.price + this.price * this.tax }}
+            .col.num(v-model="price") {{ this.price + this.price.toFixed() * this.tax }}
             .col &#x62F;.&#x627;
         .buttons
           button.btu(@click="printInvoice") طباعة الفاتورة
@@ -197,7 +197,7 @@ export default {
   props: ["index"],
   data() {
     return {
-      success: false,
+      success: true,
       allIetms: [],
       items2: [],
       value2: [],
@@ -381,6 +381,10 @@ export default {
         window.scrollBy(100, 0);
         this.rowData.push(my_object);
         this.price = my_object.price + this.price;
+        var totn_number = 123.456789;
+        console.log(totn_number.toFixed());
+        console.log(totn_number.toFixed(1));
+        console.log(totn_number.toFixed(2));
       }
       new Audio(
         "http://commondatastorage.googleapis.com/codeskulptor-assets/Collision8-Bit.ogg"
