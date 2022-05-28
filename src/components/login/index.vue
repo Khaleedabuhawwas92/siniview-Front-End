@@ -55,7 +55,7 @@
 export default {
   data() {
     return {
-       success: true,
+      success: true,
       error: "",
       valid: false,
       showPassword: false,
@@ -94,6 +94,7 @@ export default {
   font-size: 30px;
   font-weight: bold;
 }
+
 .login-content {
   box-sizing: border-box;
 
@@ -157,4 +158,5 @@ export default {
     }
   }
 }
+
 </style>

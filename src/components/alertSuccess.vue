@@ -1,12 +1,10 @@
 <template lang="pug">
 v-alert.closeSuccess(
   dense,
-  dismissible,
   prominent,
-  text,
   type="success",
   :value="showSuccessAlert",
-  transition="slide-x-transition",
+  transition="slide-y-transition",
   @click="clickHandler"
 )
   | {{ massege }}
@@ -24,7 +22,7 @@ export default {
 <style scoped>
 .closeSuccess {
   position: absolute;
-  right: 12px;
+  left: 12px;
   top: 12px;
   z-index: 999;
   font-size: 30px;

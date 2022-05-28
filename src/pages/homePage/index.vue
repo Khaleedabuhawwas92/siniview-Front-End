@@ -77,15 +77,15 @@
         .mr-4
           v-row.sum
             .col الضريبة
-            .col.num(v-model="price") {{ this.price.toFixed(1) * this.tax.toFixed(1) }}
+            .col.num {{ this.price.toFixed(1) * this.tax.toFixed(1) }}
             .col &#x62F;.&#x627;
           v-row.sum
             .col المجموع
-            .col.num(v-model="price") {{ this.price }}
+            .col.num {{ this.price }}
             .col &#x62F;.&#x627;
           v-row.sum
             .col الحساب الاجمالي
-            .col.num(v-model="price") {{ this.price + this.price.toFixed() * this.tax }}
+            .col.num {{ this.price + this.price.toFixed() * this.tax }}
             .col &#x62F;.&#x627;
         .buttons
           button.btu(@click="printInvoice") طباعة الفاتورة
@@ -192,12 +192,12 @@
           | Save
 </template>
 <script >
-import { mapActions, mapState, mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   props: ["index"],
   data() {
     return {
-      success: true,
+      success: false,
       allIetms: [],
       items2: [],
       value2: [],
@@ -382,9 +382,6 @@ export default {
         this.rowData.push(my_object);
         this.price = my_object.price + this.price;
         var totn_number = 123.456789;
-        console.log(totn_number.toFixed());
-        console.log(totn_number.toFixed(1));
-        console.log(totn_number.toFixed(2));
       }
       new Audio(
         "http://commondatastorage.googleapis.com/codeskulptor-assets/Collision8-Bit.ogg"
@@ -647,62 +644,6 @@ export default {
     opacity: 0;
   }
 }
-.bounce-out-top {
-  -webkit-animation: bounce-out-top 1.5s both;
-  animation: bounce-out-top 1.5s both;
-}
-@keyframes bounce-out-top {
-  0% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  5% {
-    -webkit-transform: translateY(30px);
-    transform: translateY(30px);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  15% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  25% {
-    -webkit-transform: translateY(38px);
-    transform: translateY(38px);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  38% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  52% {
-    -webkit-transform: translateY(75px);
-    transform: translateY(75px);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  70% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    -webkit-transform: translateY(-800px);
-    transform: translateY(-800px);
-    opacity: 0;
-  }
-}
 
 .sum {
   display: flex;
@@ -737,7 +678,7 @@ export default {
 }
 
 .buttons {
-  padding: 50px 0;
+  padding: 100px 0 0 0;
   width: 100%;
   margin: 0 auto;
   font-family: "GE-Hili";
@@ -749,11 +690,6 @@ export default {
   margin: 3px 3px;
   border-radius: 10px;
   font-size: 27px;
-}
-
-.active {
-  background-color: #012e48;
-  color: #fff;
 }
 
 /* width */
@@ -777,9 +713,7 @@ export default {
 ::-webkit-scrollbar-thumb:hover {
   background: #f0eeee;
 }
-.center {
-  text-align: right;
-}
+
 .alert-notfations {
   position: absolute;
   width: 500px;

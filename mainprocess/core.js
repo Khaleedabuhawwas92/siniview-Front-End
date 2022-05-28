@@ -20,16 +20,12 @@ const makeAppWindow = () => {
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: true, // turn off remote
       webSecurity: false,
-      frame: false,
-
       // preload: shell2.exec(__dirname, "src\\api\\backend.bat.js"),
     },
-
     width: 2000,
     height: 2000,
     minWidth: 375,
     minHeight: 780,
-
     icon: (__dirname, "build/icon.png"),
   });
 
