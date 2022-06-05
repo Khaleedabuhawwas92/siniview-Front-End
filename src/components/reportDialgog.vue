@@ -154,6 +154,7 @@ export default {
           align: "start",
           value: "allIetms",
         },
+        { text: "invoiceNumber", value: "invoiceNumber" },
         { text: "Total Account", value: "totalAccount" },
         { text: "Tax", value: "tax" },
         { text: "Sumation", value: "sumation" },
@@ -161,6 +162,7 @@ export default {
         { text: "Casher Name", value: "casherName" },
         { text: "time", value: "time" },
         { text: "created_on", value: "created_on" },
+
 
         { text: "Actions", value: "actions", sortable: false },
       ],

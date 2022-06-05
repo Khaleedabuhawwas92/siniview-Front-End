@@ -52,6 +52,7 @@ export default {
   props: ["price", "rowData", "dialogInvoice", "allIetms", "additions"],
   data() {
     return {
+      in: 0,
       vv: [],
       dialog5: false,
       dialog2: false,
@@ -72,9 +73,19 @@ export default {
       this.$emit("toggle");
     },
 
-    confarim() {
-      this.$axios
+    async confarim() {
+      await this.$axios
+        .get("http://localhost:8000/api/reportItems/findlastrecored/")
+        .then((result) => {
+          this.in = result.data.invoiceNumber;
+          console.log(result.data.invoiceNumber);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      await this.$axios
         .post("http://localhost:8000/api/reportItems/", {
+          invoiceNumber: this.in + 1,
           allIetms: this.allIetms,
           sumation: this.price + this.price * this.tax,
           totalAccount: this.price,
