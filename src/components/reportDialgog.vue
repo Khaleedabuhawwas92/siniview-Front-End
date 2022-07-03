@@ -10,7 +10,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
       .con
         v-tabs(v-model="tab", centered, grow, dark, background-color="#2c3e50")
           v-tabs-slider(color="#e55039")
-          v-tab.text-h4.tabs-style(v-for="item in items2" :key="item")
+          v-tab.text-h4.tabs-style(v-for="item in items2", :key="item")
             | {{ item }}
             v-icon(x-large="")
     v-tabs-items(v-model="tab")
@@ -31,7 +31,9 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
           item-key="desserts",
           sort-by="createdAt",
           group-by="created_on",
-          dense
+          dense,
+          calculate-widths,
+          caption="المبيعات لليوم"
         )
           template(v-slot:item.actions="{ item }")
             v-icon.mr-2(small="", @click="editItem(item)")
@@ -39,9 +41,9 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
             v-icon(small="", @click="deleteItem(item, item.id)")
               | mdi-delete
           template(v-slot:body.append)
-            tr
+            tr.pink--text
               td(colspan="3")
-              td.total-of-report(colspan="3", v-if="loggedInUser.name") {{ totalReport }} JD
+              td.total-of-report(colspan="3", v-if="desserts.created_on") {{ sumField('sumation') }} JD
 
       v-tab-item
         v-card(flat="")
@@ -65,9 +67,9 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
               group-by="createdAt"
             )
               template(v-slot:body.append)
-                tr
+                tr.pink--text
                   td
-                  td.total-of-report(colspan="1") {{ totalExpenses }} JD
+                  td.total-of-report(colspan="1") {{sumField1('value') }} JD
 
       v-tab-item
         v-card(flat="")
@@ -91,9 +93,9 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
               group-by="createdAt"
             )
               template(v-slot:body.append)
-                tr
+                tr.pink--text
                   td
-                  td.total-of-report(colspan="1") {{ totalPurchase }} JD
+                  td.total-of-report(colspan="1" ) {{ sumField('value') }} JD
       v-tab-item
         v-card(flat="")
           v-card-title.text-h3
@@ -163,7 +165,6 @@ export default {
         { text: "time", value: "time" },
         { text: "created_on", value: "created_on" },
 
-
         { text: "Actions", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -179,7 +180,8 @@ export default {
         this.desserts = result.data;
 
         this.desserts.forEach((element) => {
-          this.totalReport += element.sumation;
+
+
           this.time3 = element.createdAt;
         });
       })
@@ -212,7 +214,7 @@ export default {
           element.createdAt = this.$moment(element.createdAt).format(
             "DD/MM/YYYY"
           );
-          this.totalPurchase += element.value;
+          // this.totalPurchase += element.value;
         });
       })
       .catch((err) => {
@@ -220,6 +222,14 @@ export default {
       });
   },
   methods: {
+    sumField(key) {
+        // sum data in give key (property)
+        return this.desserts.reduce((a, b) => a + (b[key] || 0), 0)
+    },
+    sumField1(key) {
+        // sum data in give key (property)
+        return this.desserts.reduce((a, b) => a + (b[key] || 0), 0)
+    },
     deleteItem(item, id) {
       console.log(id);
       this.$axios

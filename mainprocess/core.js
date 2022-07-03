@@ -22,11 +22,9 @@ const makeAppWindow = () => {
       webSecurity: false,
       // preload: shell2.exec(__dirname, "src\\api\\backend.bat.js"),
     },
-    width: 2000,
-    height: 2000,
-    minWidth: 375,
-    minHeight: 780,
+    fullscreen: true,
     icon: (__dirname, "build/icon.png"),
+    frame: false,
   });
 
   win.on("closed", () => (win = null));
