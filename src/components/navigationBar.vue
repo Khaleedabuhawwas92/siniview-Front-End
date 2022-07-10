@@ -11,7 +11,7 @@
       v-icon(x-large="") mdi-chart-box
     v-btn(@click="dialogExpenses = true")
       span(v-GE-Hili-font, v-fontSize.bold.color="20") المصاريف
-      v-icon(x-large="") mdi-cart-outline
+      v-icon(x-large="") mdi-box-cutter
     v-btn(@click="dialogPurchases = true")
       span(v-GE-Hili-font, v-fontSize.bold.color="20") المشتريات
       v-icon(x-large="") mdi-cart-outline
@@ -195,10 +195,7 @@ export default {
   font-style: italic;
 }
 
-.price {
-  font-size: 15px;
-  font-family: "GE-Hili";
-}
+
 
 .price1 {
   position: absolute;
@@ -209,25 +206,9 @@ export default {
 
 }
 
-.list {
-  font-family: "GE-Hili";
-  font-weight: bold;
-  font-size: 15px;
-}
 
-.card-title {
-  font-size: 20px;
-  line-height: 0.9;
-  height: 80px;
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-  font-weight: bold;
-  text-align: center;
-  padding: 0 40px;
-  font-family: "GE-Hili";
-  direction: rtl;
-}
+
+
 
 .card-text {
   font-size: 25px !important;
@@ -252,6 +233,7 @@ export default {
   background: rgb(148, 120, 120);
   border-radius: 10px;
 }
+
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {

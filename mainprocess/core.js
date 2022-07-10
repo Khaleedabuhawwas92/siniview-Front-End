@@ -24,7 +24,6 @@ const makeAppWindow = () => {
     },
     fullscreen: true,
     icon: (__dirname, "build/icon.png"),
-    frame: false,
   });
 
   win.on("closed", () => (win = null));

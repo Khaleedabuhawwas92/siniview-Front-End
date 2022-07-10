@@ -42,8 +42,8 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
               | mdi-delete
           template(v-slot:body.append)
             tr.pink--text
-              td(colspan="3")
-              td.total-of-report(colspan="3", v-if="desserts.created_on") {{ sumField('sumation') }} JD
+              td(colspan="4")
+              td.total-of-report(colspan="4", ) {{ sumDesserts('sumation') }} JD
 
       v-tab-item
         v-card(flat="")
@@ -69,7 +69,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
               template(v-slot:body.append)
                 tr.pink--text
                   td
-                  td.total-of-report(colspan="1") {{sumField1('value') }} JD
+                  td.total-of-report(colspan="1") {{ sumExpenses('value') }} JD
 
       v-tab-item
         v-card(flat="")
@@ -95,7 +95,7 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
               template(v-slot:body.append)
                 tr.pink--text
                   td
-                  td.total-of-report(colspan="1" ) {{ sumField('value') }} JD
+                  td.total-of-report(colspan="1") {{ sumPurchase('value') }} JD
       v-tab-item
         v-card(flat="")
           v-card-title.text-h3
@@ -180,8 +180,6 @@ export default {
         this.desserts = result.data;
 
         this.desserts.forEach((element) => {
-
-
           this.time3 = element.createdAt;
         });
       })
@@ -222,13 +220,17 @@ export default {
       });
   },
   methods: {
-    sumField(key) {
-        // sum data in give key (property)
-        return this.desserts.reduce((a, b) => a + (b[key] || 0), 0)
+    sumDesserts(key) {
+      // sum Desserts  data in give key (property)
+      return this.desserts.reduce((a, b) => a + (b[key] || 0), 0);
     },
-    sumField1(key) {
-        // sum data in give key (property)
-        return this.desserts.reduce((a, b) => a + (b[key] || 0), 0)
+    sumExpenses(key) {
+      // sum Expenses data in give key (property)
+      return this.expenses.reduce((a, b) => a + (b[key] || 0), 0);
+    },
+    sumPurchase(key) {
+      // sum Purchase data in give key (property)
+      return this.purchase.reduce((a, b) => a + (b[key] || 0), 0);
     },
     deleteItem(item, id) {
       console.log(id);
@@ -289,4 +291,5 @@ export default {
   width: 40%;
   margin-right: 30%;
 }
+
 </style>

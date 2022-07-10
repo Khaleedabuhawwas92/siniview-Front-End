@@ -1,7 +1,7 @@
 <template lang="pug">
 .homePage
   <navigationBar  :items="items" @toggle="halooo" :price="price" />
-  <alertSuccess massege="تمت العملية بنجاح"  @toggle="showSuccessAlert" v-if="success"/>
+  <alertSuccess massege="تمت العملية بنجاح"  @toggle="showSuccessAlert" v-if="success" />
   v-tabs.commint(
     background-color="#e74c3c",
     dark,
@@ -39,9 +39,10 @@
             mandatory,
             v-model="toggle_one",
             borderless,
-            color="red"
+            color="black",
+
           )
-            v-btn.text-h4.toggle3(x-large) ديلفري
+            v-btn.text-h4.toggle3(x-large, v-if="toggle_one = 1") ديلفري
             v-btn.text-h4.toggle3(x-large) كاش
 
         .icon
