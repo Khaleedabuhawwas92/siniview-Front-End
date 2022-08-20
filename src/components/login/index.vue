@@ -1,19 +1,10 @@
 <template lang="pug">
 .login-content
-  v-alert.alert-notfations(
-    :value="alert2",
-    color="red",
-    dark,
-    border="top",
-    transition="scale-transition"
-  )
-    | الرجاء التاكد من الرقم السري او اسم المستخدم
-
-  v-container.tow-bxos
+  v-container.login-form-container
     v-row
-      v-col.box-style
+      v-col.login-content
         v-card.rounded-xl.login-card
-          v-card-title.title-login تسجيل الدخول
+          v-card-title.login-title تسجيل الدخول
           v-form(ref="form", v-model="valid", lazy-validation="")
             v-text-field(
               label="اسم المستخدم",
@@ -39,7 +30,7 @@
               large=""
             )
               | mdi-close-circle
-      v-col.box-style
+      v-col.login-content
         v-card.rounded-xl.brand-card
           .barand-contint
             img(src="../../assets/images/logo.png", alt="", width="280")
@@ -49,6 +40,14 @@
               span.num +9679514871 / +962798302592
               |
               | www.mniview.com
+  v-alert.alert-notfations(
+    :value="alert2",
+    color="red",
+    dark,
+    border="top",
+    transition="scale-transition"
+  )
+    | الرجاء التاكد من الرقم السري او اسم المستخدم
 </template>
 
 <script>
@@ -86,32 +85,21 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-
-.alert-notfations {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  font-size: 30px;
-  font-weight: bold;
-}
-
 .login-content {
   box-sizing: border-box;
-
   background-color: #012e48;
-
   height: 100%;
   width: 100%;
   z-index: 1;
-  // background-image: url("~/assets/images/corner-view.png");
+
   background-position: -400px -400px;
 
-  .tow-bxos {
+  .login-form-container {
     z-index: 999;
     width: 50%;
     margin-top: 300px;
 
-    .box-style {
+    .login-content {
       padding: 0;
       text-align: center;
       width: 220px;
@@ -123,7 +111,7 @@ export default {
         z-index: 999;
         filter: drop-shadow(0.5rem 0.5rem 1rem rgb(68, 66, 66));
 
-        .title-login {
+        .login-title {
           text-align: center;
           display: block;
         }
@@ -158,5 +146,11 @@ export default {
     }
   }
 }
-
+.alert-notfations {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
 </style>

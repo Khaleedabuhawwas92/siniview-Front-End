@@ -2,7 +2,7 @@
 v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
   v-card(tile="")
     v-toolbar(dark, color="#012e48", height="100px", background-color="red")
-      v-btn(icon="", @click="clickHandler")
+      v-btn(icon="", @click="clickHandler" ,ondblclick="")
         v-icon mdi-close
       v-toolbar-title.text-h4
         | التقارير
@@ -143,6 +143,7 @@ export default {
         { text: "Casher Name", value: "casherName" },
         { text: "Wheigt", value: "wheigt" },
         { text: "Created At", value: "createdAt" },
+
       ],
       expensesheaders: [
         { text: "description", value: "description" },
@@ -163,6 +164,7 @@ export default {
         // { text: "Descraption", value: "discraption" },
         { text: "Casher Name", value: "casherName" },
         { text: "time", value: "time" },
+        { text: "paymentMethod", value: "paymentMethod" },
         { text: "created_on", value: "created_on" },
 
         { text: "Actions", value: "actions", sortable: false },
@@ -178,6 +180,7 @@ export default {
       )
       .then((result) => {
         this.desserts = result.data;
+        console.log(this.desserts);
 
         this.desserts.forEach((element) => {
           this.time3 = element.createdAt;

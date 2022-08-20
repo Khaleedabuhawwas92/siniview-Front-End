@@ -1,15 +1,15 @@
 <template lang="pug">
 .homePage
-  <navigationBar  :items="items" @toggle="halooo" :price="price" />
+  <navigationBar  :items="items" @toggle="halooo" :price="price" :toggleOne= "toggle_one"  />
   <alertSuccess massege="تمت العملية بنجاح"  @toggle="showSuccessAlert" v-if="success" />
-  v-tabs.commint(
+  v-tabs.commint-order(
     background-color="#e74c3c",
     dark,
     v-if="this.tables.length !== 0",
     ,
     v-GE-Hili-font
   )
-    v-tab.text-h4.px-2.commint2(@click="return1(0)") طلب معلق 1
+    v-tab.text-h4.px-2(@click="return1(0)") طلب معلق 1
 
   v-alert.alert-notfations(
     :value="alert1",
@@ -30,20 +30,19 @@
   )
     | هناك طلب معلق
   .all-contint
-    .sidbar
+    #sidebar.sidbar
       .sidbar-contant
         .image
           img(src="../../assets/images/logo.png", width="300")
-        .card3
+        #card3.card3
           v-btn-toggle.toggle(
             mandatory,
             v-model="toggle_one",
             borderless,
-            color="black",
-
+            color="lime darken-4"
           )
-            v-btn.text-h4.toggle3(x-large, v-if="toggle_one = 1") ديلفري
-            v-btn.text-h4.toggle3(x-large) كاش
+            v-btn.text-h4.toggle3(x-large, @click="hadelChangeColor") ديلفري
+            v-btn.text-h4.toggle3(, x-large, @click="hadelChangeColor") كاش
 
         .icon
           v-icon(color="#fff", x-large) mdi-cart-outline
@@ -158,7 +157,7 @@
         v-model="radioGroup",
         v-if="radioGroup === 'primary'"
       )
-        <Calculator :price="price"  @toggle="colseToggle" :rowData="rowData" :allIetms="allIetms" :additions="additions" />
+        <Calculator :price="price"  @toggle="colseToggle" :rowData="rowData" :allIetms="allIetms" :additions="additions" :toggle_one="toggle_one" />
   v-dialog(max-width="600", v-model="errorMassege")
     v-card.text-center(color="#d63031")
       v-toolbar(color="red", background="red") ERORR MASSEGE
@@ -169,22 +168,30 @@
     template(v-slot:activator="{ on, attrs }")
       v-btn(color="primary", dark="", v-bind="attrs", v-on="on")
         | Open Dialog
-    v-card
+    v-card.mx-auto(max-width="500")
       v-card-title اضافة
       v-divider
       v-card-text(style="height: 200px")
         v-container(fluid="")
           //- span {{ item }}
-
-          v-select.text-h5(
+          v-list.text-h5(
             v-model="value2",
             :items="items2",
             label="Select Item",
             multiple=""
           )
-            v-chip(v-if="index === 0")
-            span.grey--text.text-caption(v-if="index === 1")
-              | (+{{ value.length - 1 }} others)
+            v-list-item
+              v-row
+                v-container(fluid="")
+                  p {{ fillItems.name }}
+                  v-checkbox(
+                    v-for="(item, index) in items2",
+                    :key="items2[index].text",
+                    v-model="items2.values",
+                    :label="items2.values",
+                    :value="items2.values"
+                  )
+
       v-divider
       v-card-actions
         v-btn(color="blue darken-1", text="", @click="chooese = false")
@@ -193,14 +200,14 @@
           | Save
 </template>
 <script >
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   props: ["index"],
   data() {
     return {
       success: false,
       allIetms: [],
-      items2: [],
+      items2: ["khaleed", "amin"],
       value2: [],
       chooese: false,
       errorMassege: false,
@@ -227,8 +234,6 @@ export default {
       date: new Date(),
       items: [],
       tables: [],
-      swaping: [],
-      items1: {},
       headers: [
         {
           text: "الطلب",
@@ -238,20 +243,15 @@ export default {
         { text: "السعر", value: "price" },
         { text: "الوصف", value: "sum" },
       ],
-      state: {
-        connection: null,
-        databases: [],
-        databaseName: "",
-        collections: [],
-        records: [],
-        collectionName: "",
-        totalNumberOfResults: null,
-      },
     };
+  },
+  async beforeMount() {
+    // action stores.orders.getAllOrders
+    await this.$store.dispatch("fetchMenu");
   },
 
   computed: {
-    ...mapGetters(["isAuthenticated", "loggedInUser"]),
+    ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList"]),
   },
 
   async fetch() {
@@ -259,17 +259,58 @@ export default {
       this.items = result.data;
     });
   },
+  watch: {
+    toggle_one(val) {
+      let sidebar = document.getElementById("sidebar");
+      let card3 = document.getElementById("card3");
+      if (val === 0) {
+
+        sidebar.classList.remove("bg-pan-right1");
+        card3.classList.remove("bg-pan-right1");
+        sidebar.classList.add("bg-pan-right");
+        card3.classList.add("bg-pan-right");
+      } else {
+        card3.classList.remove("bg-pan-right");
+        sidebar.classList.remove("bg-pan-right");
+        card3.classList.add("bg-pan-right1");
+        sidebar.classList.add("bg-pan-right1");
+      }
+    },
+  },
 
   methods: {
+    hadelChangeColor() {
+      let sidebar = document.getElementById("sidebar");
+      let card3 = document.getElementById("card3");
+      if (this.toggle_one === 1) {
+        console.log(this.getMenuList);
+        sidebar.classList.remove("bg-pan-right1");
+        card3.classList.remove("bg-pan-right1");
+        sidebar.classList.add("bg-pan-right");
+        card3.classList.add("bg-pan-right");
+      } else {
+        card3.classList.remove("bg-pan-right");
+        sidebar.classList.remove("bg-pan-right");
+        card3.classList.add("bg-pan-right1");
+        sidebar.classList.add("bg-pan-right1");
+      }
+    },
     colseToggle() {
       this.dialogInvoice = false;
       this.removeItems();
       this.current = 0;
+      this.toggle_one = 1;
       this.showSuccessAlert();
     },
     colseToggle2() {
       this.dialogInvoice = false;
       this.current = "";
+    },
+    // fill the data to item2 array
+    fillItems() {
+      this.items2.forEach((item) => {
+        this.allIetms.push(item);
+      });
     },
 
     restartAllValues() {
@@ -372,6 +413,7 @@ export default {
           discraption: this.items[Tabindex].product[index].discraption,
           additions: this.items[Tabindex].product[index].additions,
           title: this.items[Tabindex].product[index].title,
+          // items2:this.item[Tabindex].items2[index],
           price: Number(this.items[Tabindex].product[index].price),
           sum:
             this.price +
@@ -382,7 +424,6 @@ export default {
         window.scrollBy(100, 0);
         this.rowData.push(my_object);
         this.price = my_object.price + this.price;
-        var totn_number = 123.456789;
       }
       new Audio(
         "http://commondatastorage.googleapis.com/codeskulptor-assets/Collision8-Bit.ogg"
@@ -419,23 +460,28 @@ export default {
     editElement: function (index, row) {
       this.chooese = true;
 
-      this.rowData.forEach((element) => {
-        this.items2 = element.additions;
-      });
+      console.log(this.items2);
     },
   },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 @font-face {
   font-family: "Gideon Roman";
   src: url("../../assets/fonts/GideonRoman-Regular.ttf");
 }
 
 .homePage {
+  transition: 3s;
   overflow: hidden;
   height: 100%;
   width: 100%;
+  .commint-order {
+    position: absolute;
+    width: 190px;
+    top: 130px;
+    left: 190px;
+  }
 }
 
 .all-contint {
@@ -448,6 +494,7 @@ export default {
 
 .sidbar {
   background: #012e48;
+  transition: 6s;
   max-width: 30%;
   padding: 10px;
   text-align: center;
@@ -480,6 +527,7 @@ export default {
 .card3 {
   border-radius: 15px;
   background-color: #012e48;
+  transition: 1s;
 }
 
 .card2 {
@@ -541,6 +589,77 @@ export default {
   border-radius: 30px;
   font-family: "Gideon Roman";
 }
+.bg-pan-right {
+  -webkit-animation: bg-pan-right 2s both;
+  animation: bg-pan-right 2s both;
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-7-11 17:37:29
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation bg-pan-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes bg-pan-right {
+  from {
+    background-color: rgb(179, 148, 148);
+  }
+  to {
+    background-color: #c5865e;
+  }
+}
+@keyframes bg-pan-right {
+  from {
+    background-color: #012e48;
+    background-position: 0% 50%;
+  }
+  to {
+    background-color: #c5865e;
+    background-position: 100% 50%;
+  }
+}
+.bg-pan-right1 {
+  -webkit-animation: bg-pan-right1 2s both;
+  animation: bg-pan-right1 2s both;
+}
+/* ----------------------------------------------
+ * Generated by Animista on 2022-7-11 17:37:29
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info.
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation bg-pan-right
+ * ----------------------------------------
+ */
+@-webkit-keyframes bg-pan-right1 {
+  from {
+    background-color: rgb(179, 148, 148);
+  }
+  to {
+    background-color: #c5865e;
+  }
+}
+@keyframes bg-pan-right1 {
+  from {
+    background-color: #c5865e;
+
+    background-position: 0% 50%;
+  }
+  to {
+    background-color: #012e48;
+
+    background-position: 100% 50%;
+  }
+}
+
 .text-focus-in {
   -webkit-animation: text-focus-in 0s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
   animation: text-focus-in 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
@@ -579,70 +698,6 @@ export default {
     -webkit-filter: blur(0px);
     filter: blur(0px);
     opacity: 1;
-  }
-}
-/* ----------------------------------------------
- * Generated by Animista on 2022-4-25 23:21:2
- * Licensed under FreeBSD License.
- * See http://animista.net/license for more info.
- * w: http://animista.net, t: @cssanimista
- * ---------------------------------------------- */
-
-/**
- * ----------------------------------------
- * animation bounce-out-top
- * ----------------------------------------
- */
-@-webkit-keyframes bounce-out-top {
-  0% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  5% {
-    -webkit-transform: translateY(30px);
-    transform: translateY(30px);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  15% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  25% {
-    -webkit-transform: translateY(38px);
-    transform: translateY(38px);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  38% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  52% {
-    -webkit-transform: translateY(75px);
-    transform: translateY(75px);
-    -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
-  }
-  70% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    -webkit-transform: translateY(800px);
-    transform: translateY(800px);
-    opacity: 0;
   }
 }
 
@@ -724,23 +779,13 @@ export default {
 }
 .alert-notfations1 {
   position: absolute;
-
   text-align: center;
   font-size: 30px;
   font-weight: bold;
   left: 500px;
   color: #fff;
 }
-.commint {
-  position: absolute;
-  width: 190px;
-  top: 130px;
-  left: 190px;
-}
-.commint2 {
-  font-family: "GE-Hili" !important;
-  font-weight: bold;
-}
+
 .massegeErorr {
   color: #fff !important;
 }

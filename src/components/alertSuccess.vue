@@ -1,5 +1,5 @@
 <template lang="pug">
-v-alert.closeSuccess(
+v-alert.massegeSuccess(
   dense,
   prominent,
   type="success",
@@ -20,7 +20,7 @@ export default {
 };
 </script>
 <style scoped>
-.closeSuccess {
+.massegeSuccess {
   position: absolute;
   left: 12px;
   top: 12px;

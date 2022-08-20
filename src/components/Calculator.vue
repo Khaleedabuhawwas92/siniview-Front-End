@@ -49,7 +49,14 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["price", "rowData", "dialogInvoice", "allIetms", "additions"],
+  props: [
+    "price",
+    "rowData",
+    "dialogInvoice",
+    "allIetms",
+    "additions",
+    "toggleOne",
+  ],
   data() {
     return {
       in: 0,
@@ -85,6 +92,7 @@ export default {
         });
       await this.$axios
         .post("http://localhost:8000/api/reportItems/", {
+          paymentMethod: this.toggleOne == 1 ? "كاش" : "ديلفري",
           invoiceNumber: this.in + 1,
           allIetms: this.allIetms,
           sumation: this.price + this.price * this.tax,
@@ -94,6 +102,7 @@ export default {
         })
         .then(function (response) {
           this.allIetms = [];
+
           console.log(response);
         })
         .catch(function (error) {
@@ -101,6 +110,7 @@ export default {
         });
       console.log(this.rowData);
       this.current = "";
+
       this.clickHandler();
     },
     cansele() {

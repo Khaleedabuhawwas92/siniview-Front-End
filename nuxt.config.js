@@ -40,7 +40,12 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ["~plugins/filter.js", "~plugins/diriectiv.js", "~plugins/axios"],
+  plugins: [
+    "~plugins/filter.js",
+    "~plugins/diriectiv.js",
+    "~plugins/axios",
+    // "~plugins/getItems.js",
+  ],
   /*
    ** Nuxt.js dev-modules
    */
