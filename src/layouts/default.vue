@@ -13,16 +13,7 @@ export default {
       alert2: false,
     };
   },
-  methods: {
-    clear() {
-      if (!$nuxt.isOffline) {
-        this.alert2 = true;
-        setTimeout(() => {
-          this.alert2 = false;
-        }, 3000);
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -74,5 +65,4 @@ html {
   color: #fff;
   background-color: #35495e;
 }
-
 </style>

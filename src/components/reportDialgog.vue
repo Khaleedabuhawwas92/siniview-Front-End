@@ -37,9 +37,9 @@ v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
         )
           template(v-slot:item.actions="{ item }")
             v-icon.mr-2(small="", @click="editItem(item)")
-              | mdi-pencil
+              | mdi-pencil-box-multiple
             v-icon(small="", @click="deleteItem(item, item.id)")
-              | mdi-delete
+              | mdi-account-details
           template(v-slot:body.append)
             tr.pink--text
               td(colspan="4")
@@ -137,20 +137,22 @@ export default {
       items2: ["المبيعات", "المصاريف", "المشتريات", "اجمالي الكاش "],
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       value: 1,
+
       purchaseheaders: [
         { text: "description", value: "description" },
         { text: "Value", value: "value" },
         { text: "Casher Name", value: "casherName" },
         { text: "Wheigt", value: "wheigt" },
         { text: "Created At", value: "createdAt" },
-
       ],
+
       expensesheaders: [
         { text: "description", value: "description" },
         { text: "Value", value: "value" },
         { text: "Casher Name", value: "casherName" },
         { text: "Created At", value: "createdAt" },
       ],
+
       headers: [
         {
           text: "All Items",
@@ -161,12 +163,11 @@ export default {
         { text: "Total Account", value: "totalAccount" },
         { text: "Tax", value: "tax" },
         { text: "Sumation", value: "sumation" },
-        // { text: "Descraption", value: "discraption" },
+        { text: "additions", value: "additions" },
         { text: "Casher Name", value: "casherName" },
         { text: "time", value: "time" },
         { text: "paymentMethod", value: "paymentMethod" },
         { text: "created_on", value: "created_on" },
-
         { text: "Actions", value: "actions", sortable: false },
       ],
       desserts: [],

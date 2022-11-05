@@ -19,8 +19,7 @@
     transition="scale-transition"
   )
     | لا يوجد طالبات للتعليق
-  v-chip.alert-notfations1(color="green", v-if="loggedInUser.isAdmain")
-    | {{ loggedInUser.name }}
+
   v-alert.alert-notfations(
     :value="alert2",
     color="black",
@@ -42,38 +41,66 @@
             color="lime darken-4"
           )
             v-btn.text-h4.toggle3(x-large, @click="hadelChangeColor") ديلفري
-            v-btn.text-h4.toggle3(, x-large, @click="hadelChangeColor") كاش
+            v-btn.text-h4.toggle3(, x-large, @click="hadelChangeColor2") كاش
 
         .icon
           v-icon(color="#fff", x-large) mdi-cart-outline
           span السلة
         .table.mx-auto
           v-row.price-hedar
-            v-col(cols="4") الصنف
+            v-col(cols="3") الصنف
             v-col(cols="1") العدد
             v-col(cols="2") السعر
-            v-col(cols="3") التعديل
+            v-col(cols="3") الاضافة
+            v-col(cols="2") التعديل
 
-          v-container#scroll-target.overflow-y-auto(style="height: 250px")
+          v-container#scroll-target.overflow-y-auto(style="height: 300px")
             v-row.list.d-flex.flex-row-reverse.text-focus-in(
-              v-for="(itemRow, index) in rowData",
-              :key="index"
+              v-for="(itemRow, index1) in rowData",
+              :key="index1"
             )
-              v-col.more(v-if="value2 != 0") {{ value2 }}
-              v-col.list-title(cols="4") {{ itemRow.title }}
+              //- v-col.more(v-if="value2 != 0") {{ value2 }}
+              v-col.list-title(cols="3") {{ itemRow.title }}
               v-col.price(cols="1") {{ 1 }}
-              v-col.price(v-model="value2", col="2") {{ itemRow.price }}
+              v-col.price(v-model="value2", cols="2") {{ itemRow.price }}
+              v-col.text-center(cols="3")
+                .row1.mx-0 {{ itemRow.additions }}
               v-col(cols="2")
                 v-icon.price(
                   color="#012e48",
-                  @click="removeElement(index, itemRow.price)"
+                  @click="removeElement(index1, itemRow.price)"
                 )
                   | mdi-close
-                v-icon.price(
-                  color="#012e48",
-                  @click="editElement(index, itemRow)"
-                )
-                  | mdi-pencil-box
+                template
+                  v-dialog(v-model="chooese1", width="500")
+                    template(v-slot:activator="{ on ,attrs}")
+                      v-icon(color="#012e48", dark v-on="on")
+                        | mdi-pencil-box
+                    v-card
+                      v-card-title.text-h5.text-center {{ massege }}
+                        v-card-text
+                          v-list.text-h5(label="Select Item")
+                            v-list-item
+                              v-container(fluid="")
+                                v-row.px-5
+                                  v-checkbox.px-9(
+
+                                    v-for="(itemRow2, index) in chooeseItem",
+                                    :key="index",
+                                    v-model="rowData[index1].additions",
+                                    :value="itemRow2.name",
+                                    :label="itemRow2.name"
+                                  )
+                        v-divider
+                        v-card-actions
+                          v-spacer
+                          v-btn(
+                            color="primary",
+                            text="",
+                            @click.stop="chooese1 = false"
+                          )
+                            | I accept
+
         .mr-4
           v-row.sum
             .col الضريبة
@@ -102,7 +129,6 @@
         | هل تريد حذف الطلبات
       v-icon(color="info", x-large)
         | mdi-delete
-
       v-card-actions
         v-spacer
         v-btn.text-h5(color="red darken-1", text="", @click="close")
@@ -157,47 +183,13 @@
         v-model="radioGroup",
         v-if="radioGroup === 'primary'"
       )
-        <Calculator :price="price"  @toggle="colseToggle" :rowData="rowData" :allIetms="allIetms" :additions="additions" :toggle_one="toggle_one" />
+        <Calculator :price="price"  @toggle="colseToggle" :rowData="rowData" :allIetms="allIetms" :additions="additions" :toggleOne="toggle_one" />
   v-dialog(max-width="600", v-model="errorMassege")
     v-card.text-center(color="#d63031")
       v-toolbar(color="red", background="red") ERORR MASSEGE
       v-card-text.massegeErorr.text-center
         .text-h2.pa-12.ma-auto لايوجد طلبات للطباعة
     v-overlay(color="#e17055")
-  v-dialog(v-model="chooese", scrollable="", max-width="300px", persistent)
-    template(v-slot:activator="{ on, attrs }")
-      v-btn(color="primary", dark="", v-bind="attrs", v-on="on")
-        | Open Dialog
-    v-card.mx-auto(max-width="500")
-      v-card-title اضافة
-      v-divider
-      v-card-text(style="height: 200px")
-        v-container(fluid="")
-          //- span {{ item }}
-          v-list.text-h5(
-            v-model="value2",
-            :items="items2",
-            label="Select Item",
-            multiple=""
-          )
-            v-list-item
-              v-row
-                v-container(fluid="")
-                  p {{ fillItems.name }}
-                  v-checkbox(
-                    v-for="(item, index) in items2",
-                    :key="items2[index].text",
-                    v-model="items2.values",
-                    :label="items2.values",
-                    :value="items2.values"
-                  )
-
-      v-divider
-      v-card-actions
-        v-btn(color="blue darken-1", text="", @click="chooese = false")
-          | Close
-        v-btn(color="blue darken-1", text="", @click="chooese = false")
-          | Save
 </template>
 <script >
 import { mapGetters, mapMutations } from "vuex";
@@ -205,9 +197,27 @@ export default {
   props: ["index"],
   data() {
     return {
+      massege: "",
+      v: false,
       success: false,
+      chooeseItem: [
+        {
+          id: "1",
+          name: "Cotton",
+          checked: true,
+        },
+        {
+          id: "2",
+          name: "Silk",
+          checked: false,
+        },
+      ],
+
+      chooese1: false,
+      selected: [],
       allIetms: [],
-      items2: ["khaleed", "amin"],
+      v: [],
+      items2: [],
       value2: [],
       chooese: false,
       errorMassege: false,
@@ -220,7 +230,7 @@ export default {
       dialogInvoice: false,
       sum: 0,
       title: "",
-      additions: [],
+      additions: "",
       date: "",
       price: 0,
       adress: "",
@@ -252,6 +262,11 @@ export default {
 
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList"]),
+    rules() {
+      return [
+        this.chooeseItem.length > 0 || "At least one item should be selected",
+      ];
+    },
   },
 
   async fetch() {
@@ -263,37 +278,90 @@ export default {
     toggle_one(val) {
       let sidebar = document.getElementById("sidebar");
       let card3 = document.getElementById("card3");
-      if (val === 0) {
-
-        sidebar.classList.remove("bg-pan-right1");
-        card3.classList.remove("bg-pan-right1");
-        sidebar.classList.add("bg-pan-right");
-        card3.classList.add("bg-pan-right");
-      } else {
-        card3.classList.remove("bg-pan-right");
+      if (val === 1) {
         sidebar.classList.remove("bg-pan-right");
-        card3.classList.add("bg-pan-right1");
         sidebar.classList.add("bg-pan-right1");
+        card3.classList.remove("bg-pan-right");
+        card3.classList.add("bg-pan-right1");
+      } else {
+        sidebar.classList.remove("bg-pan-right1");
+        sidebar.classList.add("bg-pan-right");
+        card3.classList.remove("bg-pan-right1");
+        card3.classList.add("bg-pan-right");
       }
     },
+    // allitem(val) {
+    //   return val;
+    // },
   },
 
   methods: {
+    close9(v) {
+      this.chooese1 = false;
+    },
+    check: function (e) {
+      console.log(e);
+    },
+    onCheckboxClicked: function (e) {
+      console.log(e);
+    },
+    editElement: function (o) {
+      this.massege = o.title;
+
+      this.chooese1 = true;
+    },
+    allitem(itemRow, tab, index1) {
+      // if (index1 == this.rowData.indexOf(property)) {
+      // for (let index = 0; index <= this.rowData.length; index++) {
+      //   const element = this.rowData[property].title;
+      // return console.log(element);
+      // }
+      // }
+
+      return itemRow;
+
+      // console.log(this.rowData);
+    },
+    clear() {
+      // this.allIetms.pop();
+    },
+    Senvalue(name, index, glutenfree) {
+      if (glutenfree) {
+        this.allIetms.push(name);
+        index = this.allIetms.findIndex((x) => x.index === "oh");
+        console.log(index);
+      } else if (!glutenfree) {
+        // this.allIetms.splice(index,1);
+      }
+
+      // console.log(item);
+
+      // this.items.push(val);
+    },
+    sumDesserts(key) {
+      // sum Desserts  data in give key (property)
+    },
+    splieItem(index) {
+      // sum Desserts  data in give key (property)
+      return this.items2[index];
+    },
     hadelChangeColor() {
       let sidebar = document.getElementById("sidebar");
       let card3 = document.getElementById("card3");
-      if (this.toggle_one === 1) {
-        console.log(this.getMenuList);
-        sidebar.classList.remove("bg-pan-right1");
-        card3.classList.remove("bg-pan-right1");
-        sidebar.classList.add("bg-pan-right");
-        card3.classList.add("bg-pan-right");
-      } else {
-        card3.classList.remove("bg-pan-right");
-        sidebar.classList.remove("bg-pan-right");
-        card3.classList.add("bg-pan-right1");
-        sidebar.classList.add("bg-pan-right1");
-      }
+      console.log(this.items2.join("\r\n"));
+      console.log(this.getMenuList);
+      sidebar.classList.remove("bg-pan-right1");
+      sidebar.classList.add("bg-pan-right");
+      card3.classList.remove("bg-pan-right1");
+      card3.classList.add("bg-pan-right");
+    },
+    hadelChangeColor2() {
+      let sidebar = document.getElementById("sidebar");
+      let card3 = document.getElementById("card3");
+      sidebar.classList.remove("bg-pan-right");
+      sidebar.classList.add("bg-pan-right1");
+      card3.classList.remove("bg-pan-right");
+      card3.classList.add("bg-pan-right1");
     },
     colseToggle() {
       this.dialogInvoice = false;
@@ -401,7 +469,7 @@ export default {
         .then((result) => {
           console.log(result);
         })
-        .catch((err) => {});
+        .catch((err) => { });
     },
 
     halooo(Tabindex, index) {
@@ -410,19 +478,24 @@ export default {
           allIetms: this.allIetms.push(
             this.items[Tabindex].product[index].title
           ),
+          selected: this.additions,
           discraption: this.items[Tabindex].product[index].discraption,
-          additions: this.items[Tabindex].product[index].additions,
+          additions: {},
           title: this.items[Tabindex].product[index].title,
-          // items2:this.item[Tabindex].items2[index],
+
           price: Number(this.items[Tabindex].product[index].price),
           sum:
             this.price +
             Number(this.items[Tabindex].product[index].price).toFixed(2),
           casher: this.loggedInUser.name,
         });
+
         // this.title5.push(my_object.title);
         window.scrollBy(100, 0);
         this.rowData.push(my_object);
+        // console.log(this.rowDataallIetms);
+        console.log(this.rowData);
+
         this.price = my_object.price + this.price;
       }
       new Audio(
@@ -456,12 +529,6 @@ export default {
       this.sum = 0;
       this.price = 0;
     },
-
-    editElement: function (index, row) {
-      this.chooese = true;
-
-      console.log(this.items2);
-    },
   },
 };
 </script>
@@ -470,7 +537,36 @@ export default {
   font-family: "Gideon Roman";
   src: url("../../assets/fonts/GideonRoman-Regular.ttf");
 }
+.row1 {
+  overflow: auto;
+  font-size: 15px;
+  display: inline;
+  height: 15px;
+  width: 20px;
+  overflow-wrap: break-word;
+  font-weight: bold;
+  color: #000;
+}
+// .row1::after{
+//   contain: "-";
+// }
 
+.color {
+  color: #000;
+  justify-content: center;
+  background-color: rgb(244, 237, 237);
+  overflow: hidden;
+  flex-direction: column-reverse !important;
+  width: 100%;
+
+  border: #000 1px solid;
+}
+
+.color1 {
+  line-break: normal;
+  background-color: #c5865e;
+  display: inline-block;
+}
 .homePage {
   transition: 3s;
   overflow: hidden;
@@ -585,7 +681,7 @@ export default {
   height: 25%;
   text-align: center;
   overflow: hidden;
-  margin: 5px auto;
+  margin: 2px auto;
   border-radius: 30px;
   font-family: "Gideon Roman";
 }
@@ -616,16 +712,14 @@ export default {
 @keyframes bg-pan-right {
   from {
     background-color: #012e48;
-    background-position: 0% 50%;
   }
   to {
     background-color: #c5865e;
-    background-position: 100% 50%;
   }
 }
 .bg-pan-right1 {
-  -webkit-animation: bg-pan-right1 2s both;
-  animation: bg-pan-right1 2s both;
+  -webkit-animation: bg-pan-right1 2s;
+  animation: bg-pan-right1 2s;
 }
 /* ----------------------------------------------
  * Generated by Animista on 2022-7-11 17:37:29

@@ -8,10 +8,10 @@ Vue.directive("fontSize", {
       el.style.fontWeight = "bold";
     }
     if (binding.modifiers.color) {
-      el.style.color = "#000000";
+      el.style.color = "#000" + "!important";
     }
     if (binding.modifiers.fontFamily) {
-      el.style.fontFamily = "#95a5a6";
+      el.style.fontFamily = "#95a5a6" + "!important";
     }
   },
 });

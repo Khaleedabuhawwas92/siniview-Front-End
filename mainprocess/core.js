@@ -1,8 +1,7 @@
-import { dir } from "console";
-
 const _IS_DEV_MODE_ = process.env.NODE_ENV === "DEV" ? true : false;
 const path = require("path");
 const { app, BrowserWindow, shell, ipcMain } = require("electron");
+const { PosPrinter } = require("electron-pos-printer");
 
 // require(__dirname, "src/api/server");
 
@@ -20,13 +19,16 @@ const makeAppWindow = () => {
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: true, // turn off remote
       webSecurity: false,
+
       // preload: shell2.exec(__dirname, "src\\api\\backend.bat.js"),
     },
     fullscreen: true,
     icon: (__dirname, "build/icon.png"),
   });
+  win.webContents.print({ silent: true });
 
   win.on("closed", () => (win = null));
+  ipcMain.on("print", (event, arg) => {});
 
   if (_IS_DEV_MODE_) {
     const { Nuxt, Builder } = require("nuxt");

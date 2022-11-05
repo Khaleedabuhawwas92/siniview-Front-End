@@ -7,6 +7,7 @@ module.exports = {
       port: 33333,
     },
   },
+
   middleware: "auth",
 
   generate: {
@@ -56,6 +57,7 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
+
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
@@ -109,6 +111,7 @@ module.exports = {
 
       // ....
     },
+
     babel: {
       plugins: [["@babel/plugin-proposal-private-methods", { loose: true }]],
     },
