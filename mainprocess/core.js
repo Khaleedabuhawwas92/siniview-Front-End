@@ -1,7 +1,9 @@
 const _IS_DEV_MODE_ = process.env.NODE_ENV === "DEV" ? true : false;
 const path = require("path");
-const { app, BrowserWindow, shell, ipcMain } = require("electron");
-const { PosPrinter } = require("electron-pos-printer");
+const { app, BrowserWindow, shell, ipcMain, remote } = require("electron");
+const fs = require("fs");
+
+subprocess.unref();
 
 // require(__dirname, "src/api/server");
 
@@ -15,12 +17,10 @@ let win = null; // Current window
 const makeAppWindow = () => {
   win = new BrowserWindow({
     webPreferences: {
+      preload: path.join(__dirname, "../src/preload.js"),
       nodeIntegration: true, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: true, // turn off remote
-      webSecurity: false,
-
-      // preload: shell2.exec(__dirname, "src\\api\\backend.bat.js"),
     },
     fullscreen: true,
     icon: (__dirname, "build/icon.png"),
@@ -37,11 +37,20 @@ const makeAppWindow = () => {
     const port = process.env.PORT;
     const express = require("express");
     const app2 = express();
+    const printer = require("@thiagoelg/node-printer");
+    let printers = printer.getPrinters();
+
+    try {
+      fs.writeFileSync("myfile.txt", "the text to write in the file", "utf-8");
+    } catch (e) {
+      alert("Failed to save the file !");
+    }
 
     //Init nuxt
 
     const nuxt = new Nuxt(config);
-    console.log("Working in DEV mode");
+    console.log("Working in DEV hi");
+    console.log(printers);
     const http = require("http");
     app2.use(nuxt.render);
     app2.listen(port);
