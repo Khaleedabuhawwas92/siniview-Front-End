@@ -204,7 +204,7 @@ export default {
       console.log(id);
 
 
-      this.$axios.post("http://localhost:8000/api/items/createProdect/" + id, {
+      this.$axios.post("/items/createProdect/" + id, {
         title: this.productInfo.title,
         price: this.productInfo.price,
         image: this.productInfo.image,
@@ -225,7 +225,7 @@ export default {
     },
 
     editFuncation: function (id) {
-      this.$axios.put("http://localhost:8000/api/items/" + id, {
+      this.$axios.put("/items/" + id, {
         tab: this.tab
       }).then(function (response) {
         console.log(response);
@@ -236,7 +236,7 @@ export default {
     },
     removeItem(id, name) {
       this.$axios
-        .delete("http://localhost:8000/api/items/deleteProdect/" + id, {
+        .delete("/items/deleteProdect/" + id, {
           data: { tab: name },
         })
         .then(function (response) {
@@ -249,12 +249,12 @@ export default {
       console.log(id, name);
     },
     remove(id) {
-      this.$axios.delete("http://localhost:8000/api/items/" + id);
+      this.$axios.delete("/items/" + id);
       window.location.reload(true);
     },
     clickHandlerPost() {
       this.$axios
-        .post("http://localhost:8000/api/items/", {
+        .post("/items/", {
           tab: this.input,
         })
         .then(function (response) {

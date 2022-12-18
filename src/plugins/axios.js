@@ -1,10 +1,11 @@
 export default function({ $axios, store, redirect }) {
-  $axios.onError(error => {
+  $axios.onError((error) => {
     if (error.response && error.response.status === 500) {
       redirect("/login");
     }
   });
-  $axios.interceptors.response.use(response => {
+
+  $axios.interceptors.response.use((response) => {
     if (response.status === 200) {
       if (
         response.request.responseURL &&

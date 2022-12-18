@@ -4,10 +4,12 @@ v-dialog(v-model="clickHandler", max-width="400", persistent)
     v-card-title.text-h5
       | هل انتا متاكد من تسجيل الخروج
     v-card-text.text-h3
+
       #main.ticket(ref="modelDiv")
+        select(id="usersList")
         // <img src="./logo.png" alt="Logo">
         p.centered
-          | RECEIPT EXAMPLE
+          | RECEIPT EXAMPLEdd
           br
           | Address line 1
           br
@@ -28,7 +30,7 @@ v-dialog(v-model="clickHandler", max-width="400", persistent)
               td.description JAVASCRIPT BOOK
               td.price $10.00
             tr
-              td.quantity 2.00
+              td.quantity 2.00dd
               td.description JAVASCRIPT BOOK
               td.price $10.00
             tr
@@ -51,11 +53,12 @@ v-dialog(v-model="clickHandler", max-width="400", persistent)
           | Thanks for your purchase!
           br
           | parzibyte.me/blog
-        button(@click="onInit()") print
+        button(@click="print1()") print
+
 </template>
 <script>
-import * as JSPM from 'jsprintmanager'
-// import { ipRenderer } from 'electron'
+
+
 // import fs from 'fs'
 export default {
   template: "<p>Hello {{name}}</p>",
@@ -72,6 +75,10 @@ export default {
   },
 
   methods: {
+
+
+
+
     doPrintPDF: function () {
       if (this.selected_printer === '' && !this.print2default) {
         alert("You must select a printer");
@@ -98,6 +105,7 @@ export default {
     onInit: function () {
       JSPM.JSPrintManager.auto_reconnect = true;
       JSPM.JSPrintManager.start();
+
       JSPM.JSPrintManager.WS.onStatusChanged = function () {
         if (JSPM.JSPrintManager.websocket_status == JSPM.WSStatus.Open) {
           var cpj = new JSPM.ClientPrintJob();
@@ -111,6 +119,7 @@ export default {
     getPrinters: function () {
       return new Promise((ok, err) => {
         let printers = [];
+
         if (JSPM.JSPrintManager.websocket_status == JSPM.WSStatus.Open) {
           JSPM.JSPrintManager.getPrinters().then(function (myPrinters) {
             printers = myPrinters;

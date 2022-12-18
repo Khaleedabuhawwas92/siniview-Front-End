@@ -2,10 +2,11 @@
   <div id="page">
 
     <div id="calc">
-      <printinng :dialogPrinter="dialogPrinter" @toggle="dialogPrinter = !dialogPrinter" v-if="dialogPrinter" />
-      <div id="input" class="text-center p-7">{{ current }}</div>
+      <h1 id="hi"></h1>
+
+      <div id="usersList" class="text-center p-7">{{ current }}</div>
       <h1>الرجاء ادخال القيمة</h1>
-      <div class="buttons">
+      <div class="buttons" id="">
         <button @click="buttonClick(1)">1</button>
         <button @click="buttonClick(2)">2</button>
         <button @click="buttonClick(3)">3</button>
@@ -21,38 +22,57 @@
         <!-- <button id="comma" @click="comma">.</button> -->
         <button id="0" @click="buttonClick(0)">0</button>
         <button @click="clear">C</button>
-        <button id="equals" @click="equals()">Enter</button>
-        <button id="prin" @click="this.dialogPrinter = true">prin</button>
+        <button id="equals" @click="printHandler()">Enter</button>
+        <!-- <button @click="getPrinters()">get Printers</button> -->
 
+      </div>
+      <!-- <printinng :dialogPrinter="dialogPrinter" @toggle="dialogPrinter = !dialogPrinter" v-if="dialogPrinter" /> -->
 
-        </div>
+    </div>
+    <v-dialog transition="dialog-top-transition" max-width="600" v-model="dialog5" class="text-center">
+      <template v-slot:default="dialog2" rounded>
+        <v-card class="text-center ">
+          <v-toolbar color="#dfe6e9" class="text-h2 title" v-GE-Hili-font>الباقي</v-toolbar>
+          <v-card-text>
+            <div class="text-h2 pa-12">{{ current }}</div>e
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn @click="confarim">تاكيد</v-btn>
+            <v-btn @click="dialog2.value = false">الغاء</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
 
-        </div>
-        <v-dialog transition="dialog-top-transition" max-width="600" v-model="dialog5" class="text-center">
-          <template v-slot:default="dialog2" rounded>
-            <v-card class="text-center ">
-              <v-toolbar color="#dfe6e9" class="text-h2 title" v-GE-Hili-font>الباقي</v-toolbar>
-              <v-card-text>
-                <div class="text-h2 pa-12">{{ current }}</div>e
-                </v-card-text>
-                <v-card-actions class="justify-end">
-                  <v-btn @click="confarim">تاكيد</v-btn>
-                  <v-btn @click="dialog2.value = false">الغاء</v-btn>
-                </v-card-actions>
-                </v-card>
-                </template>
-                </v-dialog>
-
-                </div>
+  </div>
 
 
 </template>
 
+
 <script>
 import { mapGetters } from "vuex";
 import printinng from './printinng.vue';
+// import job from '../examples/getPrinters';
+// const { spawn } = require('child_process');
+
+// import { exec } from 'child_process';
+
+var events = require('events');
+
+
+
+
+
+const path = require("path");
+
+
+
+// const electron = typeof process !== 'undefined' && process.versions && !!process.versions.electron;
+
+
 export default {
-  components: { printinng },
+
   props: [
     "price",
     "rowData",
@@ -75,24 +95,170 @@ export default {
       secondValue: "",
       history: [],
       tax: 0.16,
+      jspmAppInstances: null,
+      clientPrinters: null,
+      markDownData: "",
+      vocherRecapi: []
     };
   },
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
   methods: {
+   async getPrinters(){
+    await window.versions.getPrinters()
+
+
+    },
+
+    async printHandler() {
+
+      this.rowData.forEach(element => {
+        this.vocherRecapi += [{
+          type: "text",
+          value: element.title
+
+        }, {
+          type: "text",
+          value: element.price
+        }]
+
+      });
+
+
+
+      const options = {
+        preview: false,
+        margin: '2px 2px 12px 2px',
+        copies: 1,
+        printerName: 'EPSON TM-T88V Receipt',
+        timeOutPerLine: 400,
+        pageSize: '80mm', // page size
+        silent: true,
+      }
+      const options2 = {
+        preview: true,
+        margin: '2px 2px 12px 2px',
+        copies: 1,
+        printerName: 'EPSON TM-T88V Receipt',
+        timeOutPerLine: 400,
+        pageSize: '80mm', // page size
+        silent: true,
+      }
+      const data = [
+        {
+          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+          value: 'هلا عمي ابو اسماعيل',
+          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
+        },
+        {
+          type: 'table',
+          style: { border: '12px solid #fff' },             // style the table
+          // list of the columns to be rendered in the table header
+          tableHeader: [{ type: 'text', value: 'Qty' }, { type: 'text', value: 'Description', style: { fontWeight: 'bold' } }, { type: 'text', value: 'price', style: { fontWeight: 'bold' } }],
+          // multi-dimensional array depicting the rows and columns of the table body
+          tableBody: [
+            ['Cat', 2, "sdsdds"],
+
+          ],
+
+          // list of columns to be rendered in the table footer
+          tableFooter: [{ type: 'text', value: 'Total' }, { type: 'text', value: '----' }, `${this.price + this.price * this.tax} JD`],
+          // custom style for the table header
+          tableHeaderStyle: { backgroundColor: 'white', color: '#000', 'font-weight': '100', 'border': '0.5px solid #000', },
+          // custom style for the table body
+          tableBodyStyle: { 'border': '0.5px solid #000', fontWeight: 'bold' },
+          // custom style for the table footer
+          tableFooterStyle: { backgroundColor: '#000', color: '#000', 'border': '0.5px solid #000', textAlign: 'center', fontSize: "20px" },
+
+        },
+      ]
+
+
+
+      const data2 = [
+        {
+          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+          value: 'عمو شاورما',
+          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
+        },
+        {
+          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+          value: 1,
+          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
+        },
+        {
+          type: 'text',                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+          value: 'Secondary text',
+          style: { textDecoration: "wavy  underline", fontSize: "17px", textAlign: "center", color: "#000" }
+        },
+
+
+        {
+          type: 'table',
+          style: { border: '12px solid #fff' },             // style the table
+          // list of the columns to be rendered in the table header
+          tableHeader: [{ type: 'text', value: 'Qty' }, { type: 'text', value: 'Description', style: { fontWeight: 'bold' } }, { type: 'text', value: 'price', style: { fontWeight: 'bold' } }],
+          // multi-dimensional array depicting the rows and columns of the table body
+          tableBody: [
+            ['Cat', 2, "sdsdds"],
+
+          ],
+
+          // list of columns to be rendered in the table footer
+          tableFooter: [{ type: 'text', value: 'Total' }, { type: 'text', value: '----' }, `${this.price + this.price * this.tax} JD`],
+          // custom style for the table header
+          tableHeaderStyle: { backgroundColor: 'white', color: '#000', 'font-weight': '100', 'border': '0.5px solid #000', },
+          // custom style for the table body
+          tableBodyStyle: { 'border': '0.5px solid #000', fontWeight: 'bold' },
+          // custom style for the table footer
+          tableFooterStyle: { backgroundColor: '#000', color: '#000', 'border': '0.5px solid #000', textAlign: 'center', fontSize: "20px" },
+
+        },
+        {
+          type: 'table',
+          // style the table
+          style: { border: '1px solid #ddd' },
+          // list of the columns to be rendered in the table header
+          // tableHeader: ['Animal', 'Age'],
+          // multi dimensional array depicting the rows and columns of the table body
+          tableBody: [
+            ['Cash', `${this.price + this.price * this.tax} JD`],
+            ['Change', `${this.current - (this.price + this.price * this.tax)}`],
+
+          ],
+          // list of columns to be rendered in the table footer
+          // tableFooter: ['Animal', 'Age'],
+          // custom style for the table header
+          tableHeaderStyle: { backgroundColor: '#000', color: 'white' },
+          // custom style for the table body
+          tableBodyStyle: { 'border': '0.5px solid #000', 'font-weight': '100' },
+          // custom style for the table footer
+          tableFooterStyle: { backgroundColor: '#000', color: 'white', 'border': '0.5px solid #000', textAlign: 'center', fontSize: "20px" },
+        },
+      ];
+
+
+
+      await window.versions.printer(options, data2, "llslslslsls")
+
+      // await window.versions.printer2(options2, data, "llslslslsls")
+      // or any other ipcRenderer method you want to invoke
+    },
+
+
+
     clickHandler(e) {
       this.$emit("toggle");
       console.log(this.rowData);
     },
     print() {
       this.dialogPrinter = true
-
     },
 
     async confarim() {
       await this.$axios
-        .get("http://localhost:8000/api/reportItems/findlastrecored/")
+        .get("/reportItems/findlastrecored/")
         .then((result) => {
           this.in = result.data.invoiceNumber;
           console.log(result.data.invoiceNumber);
@@ -100,8 +266,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+
       await this.$axios
-        .post("http://localhost:8000/api/reportItems/", {
+        .post("/reportItems/", {
           paymentMethod: this.toggleOne === 1 ? "كاش" : "ديلفري",
           invoiceNumber: this.in + 1,
           allIetms: this.allIetms,
@@ -146,21 +313,11 @@ export default {
       this.dialog5 = true;
       console.log("......................................");
       console.log(this.allIetms);
-      console.clear();
-      this.print();
-    },
-    operatorSelection(operator) {
-      this.operator = operator;
-      this.firstValue = this.current;
-      this.current = "";
-    },
-    deleteButton() {
-      this.current = this.current.toString().slice(0, -1);
-    },
-    previousButton() {
-      this.current = this.previous;
+      this.printHandler();
     },
     comma() {
+
+
       if (!this.current.includes(".")) {
         this.current = this.current + ".";
       }
@@ -182,6 +339,7 @@ export default {
   width: 100%;
   max-height: 600px;
   padding-right: 0;
+  font-weight: bold;
 }
 
 #page {

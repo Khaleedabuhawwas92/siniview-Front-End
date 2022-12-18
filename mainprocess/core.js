@@ -1,12 +1,18 @@
 const _IS_DEV_MODE_ = process.env.NODE_ENV === "DEV" ? true : false;
+// const path = require("path");
+const fetch = require("node-fetch");
 const path = require("path");
-const { app, BrowserWindow, shell, ipcMain, remote } = require("electron");
-const fs = require("fs");
+const electron =
+  typeof process !== "undefined" &&
+  process.versions &&
+  !!process.versions.electron;
 
-subprocess.unref();
+const { PosPrinter } = require("electron-pos-printer");
+// const { setupSecurePOSPrinter } = require("electron-secure-pos-printer");
+
+const { app, BrowserWindow, ipcMain } = require("electron");
 
 // require(__dirname, "src/api/server");
-
 if (_IS_DEV_MODE_) {
 } else {
   const serve = require("electron-serve");
@@ -17,18 +23,130 @@ let win = null; // Current window
 const makeAppWindow = () => {
   win = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, "../src/preload.js"),
       nodeIntegration: true, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
-      enableRemoteModule: true, // turn off remote
+      enableRemoteModule: true,
+      preload: path.join(__dirname, "preload.js"),
     },
     fullscreen: true,
     icon: (__dirname, "build/icon.png"),
   });
   win.webContents.print({ silent: true });
 
+  // const options = {
+  //   silent: true,
+  //   deviceName: "My-Printer",
+  //   pageRanges: [
+  //     {
+  //       from: 0,
+  //       to: 1,
+  //     },
+  //   ],
+  // };
+
+  ipcMain.on("thermalPrinter1", function (event, options, data, content) {
+    win.webContents.send("thermalPrinter1", options, data, content);
+    PosPrinter.print(data, options)
+      .then(console.log)
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+  ipcMain.on("thermalPrinter2", function (event, options, data, content) {
+    win.webContents.send("thermalPrinter2", options, data, content);
+    PosPrinter.print(data, options)
+      .then(console.log)
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+
+  ipcMain.handle("getPrinters", async (event, content) => {
+    await win.webContents
+      .getPrintersAsync()
+      .then((res) => {
+        res.forEach(async (element) => {
+          await fetch("http://localhost:8000/api/printers/", {
+            method: "post",
+            body: JSON.stringify({
+              name: element.name,
+              description: element.description,
+              status: element.status,
+              isDefault: element.isDefault,
+              options: {
+                printer_location: element.options["printer-location"],
+                printer_make_and_model:
+                  element.options["printer-make-and-model"],
+                system_driverinfo: element.options.system_driverinfo,
+              },
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+        });
+      })
+      .catch((erorr) => {
+        console.log(erorr);
+      });
+  });
+
+  // ipcMain.handle("ping", (event, content) => {
+  //   let infoPrinter = win.webContents.getPrintersAsync().then((res) => {
+  //     console.log(res);
+  //   });
+  //   let printer = infoPrinter.filter(
+  //     (printer) => printer.isDefault === true
+  //   )[0];
+  //   win.webContents.print({
+  //     pageRanges: [
+  //       {
+  //         from: 0,
+  //         to: 1,
+  //       },
+  //     ],
+  //     silent: true,
+  //     printBackground: true,
+  //     deviceName: "EPSON TM-T88V Receipt",
+  //   });
+  //   console.log(content);
+  // });
+  // win.webContents.getPrinters().forEach(async (element) => {
+  //   const response = await fetch("http://localhost:8000/api/printers/", {
+  //     method: "post",
+  //     body: JSON.stringify({
+  //       name: element.name,
+  //       description: element.description,
+  //       status: element.status,
+  //       isDefault: element.isDefault,
+  //       options: {
+  //         printer_location: element.options["printer-location"],
+  //         printer_make_and_model: element.options["printer-make-and-model"],
+  //         system_driverinfo: element.options.system_driverinfo,
+  //       },
+  //     }),
+  //     headers: { "Content-Type": "application/json" },
+  //   });
+  //   const data = await response.json();
+
+  //   console.log(data);
+  // });
+
+  // axios.post("http://localhost:8000/api/printers/", {
+  // name: print.name,
+  // description: print.description,
+  // status: print.status,
+  // isDefault: print.isDefault,
+  // options: {
+  //   printer_location: print["printer-location"],
+  //   printer_make_and_model: print["printer-make-and-model"],
+  //   system_driverinfo: print.system_driverinfo,
+  // },
+  // });
+
+  //do something awesome that makes the world a better place
+
+  // Converting to JSON
+
   win.on("closed", () => (win = null));
-  ipcMain.on("print", (event, arg) => {});
 
   if (_IS_DEV_MODE_) {
     const { Nuxt, Builder } = require("nuxt");
@@ -37,20 +155,12 @@ const makeAppWindow = () => {
     const port = process.env.PORT;
     const express = require("express");
     const app2 = express();
-    const printer = require("@thiagoelg/node-printer");
-    let printers = printer.getPrinters();
-
-    try {
-      fs.writeFileSync("myfile.txt", "the text to write in the file", "utf-8");
-    } catch (e) {
-      alert("Failed to save the file !");
-    }
 
     //Init nuxt
 
     const nuxt = new Nuxt(config);
-    console.log("Working in DEV hi");
-    console.log(printers);
+    console.log("Working in DEV mode");
+
     const http = require("http");
     app2.use(nuxt.render);
     app2.listen(port);

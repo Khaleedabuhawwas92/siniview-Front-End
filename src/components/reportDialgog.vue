@@ -176,7 +176,7 @@ export default {
   async fetch() {
     await this.$axios
       .get(
-        "http://localhost:8000/api/reportItems/displaypublished/" +
+        "/reportItems/displaypublished/" +
           this.loggedInUser.name
       )
       .then((result) => {
@@ -192,7 +192,7 @@ export default {
       });
     await this.$axios
       .get(
-        "http://localhost:8000/api/expenses/published/" + this.loggedInUser.name
+        "/expenses/published/" + this.loggedInUser.name
       )
       .then((result) => {
         this.expenses = result.data;
@@ -239,7 +239,7 @@ export default {
     deleteItem(item, id) {
       console.log(id);
       this.$axios
-        .get("http://localhost:8000/api/reportItems/undisplaypublished/" + id)
+        .get("/reportItems/undisplaypublished/" + id)
         .then((result) => {
           console.log(result);
         })

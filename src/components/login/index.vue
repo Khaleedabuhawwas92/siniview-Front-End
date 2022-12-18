@@ -1,5 +1,6 @@
 <template lang="pug">
 .login-content
+  p(id="info13")  {{masse22}}
   v-container.login-form-container
     v-row
       v-col.login-content
@@ -52,7 +53,9 @@
 
 <script>
 export default {
+
   data() {
+
     return {
       success: true,
       error: "",
@@ -61,11 +64,13 @@ export default {
       hasName: false,
       hasAge: false,
       alert2: false,
+      masse22: `This app is using Chrome (v${versions.chrome()}), Node.js (v${versions.node()}), and Electron (v${versions.electron()})`,
       userInfo: {
         email: "",
         password: "",
       },
     };
+
   },
   methods: {
     async login1(userInfo) {
@@ -73,7 +78,6 @@ export default {
         let response = await this.$auth.loginWith("local", {
           data: this.userInfo,
         });
-        console.log(response);
       } catch (err) {
         this.alert2 = true;
         setTimeout(() => {
@@ -82,17 +86,22 @@ export default {
       }
     },
   },
+
+
 };
 </script>
 <style scoped lang="scss">
+#info13 {
+  color: white;
+}
 .login-content {
   box-sizing: border-box;
   background-color: #012e48;
   height: 100%;
   width: 100%;
   z-index: 1;
-
   background-position: -400px -400px;
+
 
   .login-form-container {
     z-index: 999;
@@ -104,6 +113,7 @@ export default {
       text-align: center;
       width: 220px;
       height: 500px;
+
       .login-card {
         padding: 100px;
         height: 500px;
@@ -115,15 +125,18 @@ export default {
           text-align: center;
           display: block;
         }
+
         .close:hover {
           font-size: 40px;
           cursor: pointer;
         }
+
         .button {
           text-decoration: none;
           color: black;
         }
       }
+
       .brand-card {
         box-sizing: border-box;
         height: 450px;
@@ -132,11 +145,13 @@ export default {
         background-color: #012e48;
         text-align: center;
         filter: drop-shadow(0.5rem 0.5rem 1rem rgb(68, 66, 66));
+
         .barand-contint {
           margin: 25px auto;
           padding: 70px 0;
           color: #fff;
           font-family: "GE-Hili", sans-serif;
+
           .num {
             font-family: "Courier New", Courier, monospace;
             font-size: 20px;
@@ -146,6 +161,7 @@ export default {
     }
   }
 }
+
 .alert-notfations {
   position: absolute;
   width: 100%;

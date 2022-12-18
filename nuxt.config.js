@@ -1,5 +1,9 @@
 module.exports = {
   srcDir: "src/",
+  generate: {
+    dir: ".app",
+  },
+
   ssr: false,
   config: {
     nuxt: {
@@ -9,10 +13,6 @@ module.exports = {
   },
 
   middleware: "auth",
-
-  generate: {
-    dir: ".app",
-  },
 
   components: true,
 
@@ -38,19 +38,27 @@ module.exports = {
    ** Global CSS
    */
   css: ["@/assets/scss/main.scss"],
+  modules: [
+    // Doc: https://axios.nuxtjs.org/usage
+    "@nuxtjs/axios",
+    "@nuxtjs/auth-next",
+  ],
   /*
    ** Plugins to load before mounting the App
+
    */
   plugins: [
     "~plugins/filter.js",
     "~plugins/diriectiv.js",
     "~plugins/axios",
+    "~plugins/printing.js",
     // "~plugins/getItems.js",
   ],
   /*
    ** Nuxt.js dev-modules
    */
   buildModules: ["@nuxtjs/vuetify", "@nuxtjs/moment"],
+
   // moment: {
   //   locales: ["en-US"],
   // },
@@ -58,11 +66,6 @@ module.exports = {
    ** Nuxt.js modules
    */
 
-  modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    "@nuxtjs/axios",
-    "@nuxtjs/auth-next",
-  ],
   // Build Configuration: auth
   auth: {
     redirect: {
@@ -107,6 +110,7 @@ module.exports = {
     extend(config, { isDev, isClient }) {
       config.node = {
         fs: "empty",
+        child_process: "empty",
       };
 
       // ....
@@ -115,6 +119,7 @@ module.exports = {
     babel: {
       plugins: [["@babel/plugin-proposal-private-methods", { loose: true }]],
     },
+    postcss: null,
     devtools: false,
     /*
      ** You can extend webpack config here
@@ -124,7 +129,7 @@ module.exports = {
         implementation: require("sass"),
       },
     },
-    extend(config, ctx) {},
   },
+
   // serverMiddleware: ["api/server.js"],
 };

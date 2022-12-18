@@ -45,7 +45,7 @@ export default {
   methods: {
     clickHandlerPost() {
       this.$axios
-        .post("http://localhost:8000/api/expenses/", {
+        .post("/expenses/", {
           description: this.description,
           value: this.value,
           casherName: this.loggedInUser.name,

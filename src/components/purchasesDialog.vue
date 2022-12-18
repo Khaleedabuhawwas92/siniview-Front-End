@@ -52,7 +52,7 @@ export default {
   methods: {
     clickHandlerPost() {
       this.$axios
-        .post("http://localhost:8000/api/purchase/", {
+        .post("/purchase/", {
           description: this.description,
           value: this.value,
           wheigt: this.wheigt,
