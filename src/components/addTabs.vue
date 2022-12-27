@@ -73,7 +73,6 @@ v-dialog(v-model="clickHandler", fullscreen)
                 v-text-field(
                   label="اسم القائمة",
                   required,
-
                     v-model="tab",
                     value="tab"
                       )
@@ -151,17 +150,13 @@ v-dialog(v-model="clickHandler", fullscreen)
               v-col
                 v-text-field(label="اسم القائمة", required, v-model="input")
         v-row(justify="space-between")
-          v-btn.button-style(@click="EditProduct = false", color="red") اغلاق
+          v-btn.button-style(@click="EditProduct = false", color="red") hyghr
           v-btn.button-style(@click="", color="info") حفظ
 
 
 </template>
 <script>
 import { mapGetters } from "vuex";
-
-
-
-
 export default {
   props: ["addtabs"],
   data() {
@@ -190,20 +185,24 @@ export default {
     };
   },
 
+
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList"]),
+
+  },
+  asyncData() {
+    this.$store.dispatch("fetchMenu");
   },
 
+
   methods: {
+
     OpenInputProduct(id) {
       this.openInputProduct = true
       this.id1 = id
-
     },
     addProduct(id) {
       console.log(id);
-
-
       this.$axios.post("/items/createProdect/" + id, {
         title: this.productInfo.title,
         price: this.productInfo.price,
@@ -229,7 +228,7 @@ export default {
         tab: this.tab
       }).then(function (response) {
         console.log(response);
-        window.location.reload(true);
+        this.$nuxt.refresh()
       }).catch(function (error) {
         console.log(error);
       })
@@ -250,7 +249,7 @@ export default {
     },
     remove(id) {
       this.$axios.delete("/items/" + id);
-      window.location.reload(true);
+      this.$nuxt.refresh()
     },
     clickHandlerPost() {
       this.$axios
@@ -259,12 +258,13 @@ export default {
         })
         .then(function (response) {
           console.log(response);
-          window.location.reload(true);
-          console.log(this.getMenuList);
+          this.$nuxt.refresh();
+          this.openInput = false;
+          console.log(this.getMenuList.data);
         })
         .catch(function (error) {
-          this.openInput = false;
-          window.reload();
+          console.log(error);
+
         });
       // this.clickHandler();
     },

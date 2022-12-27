@@ -3,11 +3,15 @@ export const state = () => {
   hloo: "ssdsdsd";
   toggleOne1: 1;
   menuList: [];
+  printersList: [];
 };
 
 export const getters = {
   getMenuList: (state) => {
     return state.menuList;
+  },
+  getPrinterList: (state) => {
+    return state.printersList;
   },
 
   isAuthenticated(state) {
@@ -26,11 +30,16 @@ export const actions = {
     const response = await this.$axios.get("http://localhost:8000/api/items");
     commit("SET_MENU", response.data);
   },
+  async fetchPrinters({ commit }) {
+    const response = await this.$axios.get(
+      "http://localhost:8000/api/printers"
+    );
+    commit("SET_MENU_PRINTERS", response.data);
+  },
   async getUsers() {
     const users = await this.$axios.get(
       "https://jsonplaceholder.typicode.com/posts"
     );
-
     commit("addUsers", users);
     return users;
   },
@@ -49,6 +58,9 @@ export const mutations = {
   // },
   SET_MENU(state, menu) {
     state.menuList = menu;
+  },
+  SET_MENU_PRINTERS(state, menuPrinters) {
+    state.printersList = menuPrinters;
   },
   SET_toggle(state) {
     state.toggleOne1++;

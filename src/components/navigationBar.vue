@@ -74,6 +74,7 @@
   <purchasesDialog :dialogPurchases="dialogPurchases"  @toggle="dialogPurchases = !dialogPurchases" v-if="dialogPurchases" />
   <exitDialog :dialogClose="dialogClose"  @toggle="exit" v-if="dialogClose" :test="loggedInUser.name" />
   <addTabs :addtabs="itemsv[0].path"  @toggle="itemsv[0].path = !itemsv[0].path" v-if="itemsv[0].path" />
+  <printinng :dialogPrinter="itemsv[1].path"  @toggle="itemsv[1].path = !itemsv[1].path" v-if="itemsv[1].path" />
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -182,9 +183,9 @@ export default {
 
   .user {
     position: relative;
-      align-items: center;
+    align-items: center;
 
-      .user-photo {
+    .user-photo {
         position: absolute;
         right: 0;
         overflow: hidden;

@@ -45,15 +45,16 @@ const makeAppWindow = () => {
   // };
 
   ipcMain.on("thermalPrinter1", function (event, options, data, content) {
-    win.webContents.send("thermalPrinter1", options, data, content);
+    win.webContents.handle("thermalPrinter1", options, data, content);
     PosPrinter.print(data, options)
       .then(console.log)
       .catch((error) => {
         console.error(error);
       });
   });
+
   ipcMain.on("thermalPrinter2", function (event, options, data, content) {
-    win.webContents.send("thermalPrinter2", options, data, content);
+    win.webContents.handle("thermalPrinter2", options, data, content);
     PosPrinter.print(data, options)
       .then(console.log)
       .catch((error) => {
@@ -65,86 +66,12 @@ const makeAppWindow = () => {
     await win.webContents
       .getPrintersAsync()
       .then((res) => {
-        res.forEach(async (element) => {
-          await fetch("http://localhost:8000/api/printers/", {
-            method: "post",
-            body: JSON.stringify({
-              name: element.name,
-              description: element.description,
-              status: element.status,
-              isDefault: element.isDefault,
-              options: {
-                printer_location: element.options["printer-location"],
-                printer_make_and_model:
-                  element.options["printer-make-and-model"],
-                system_driverinfo: element.options.system_driverinfo,
-              },
-            }),
-            headers: { "Content-Type": "application/json" },
-          });
-        });
+        return res;
       })
       .catch((erorr) => {
         console.log(erorr);
       });
   });
-
-  // ipcMain.handle("ping", (event, content) => {
-  //   let infoPrinter = win.webContents.getPrintersAsync().then((res) => {
-  //     console.log(res);
-  //   });
-  //   let printer = infoPrinter.filter(
-  //     (printer) => printer.isDefault === true
-  //   )[0];
-  //   win.webContents.print({
-  //     pageRanges: [
-  //       {
-  //         from: 0,
-  //         to: 1,
-  //       },
-  //     ],
-  //     silent: true,
-  //     printBackground: true,
-  //     deviceName: "EPSON TM-T88V Receipt",
-  //   });
-  //   console.log(content);
-  // });
-  // win.webContents.getPrinters().forEach(async (element) => {
-  //   const response = await fetch("http://localhost:8000/api/printers/", {
-  //     method: "post",
-  //     body: JSON.stringify({
-  //       name: element.name,
-  //       description: element.description,
-  //       status: element.status,
-  //       isDefault: element.isDefault,
-  //       options: {
-  //         printer_location: element.options["printer-location"],
-  //         printer_make_and_model: element.options["printer-make-and-model"],
-  //         system_driverinfo: element.options.system_driverinfo,
-  //       },
-  //     }),
-  //     headers: { "Content-Type": "application/json" },
-  //   });
-  //   const data = await response.json();
-
-  //   console.log(data);
-  // });
-
-  // axios.post("http://localhost:8000/api/printers/", {
-  // name: print.name,
-  // description: print.description,
-  // status: print.status,
-  // isDefault: print.isDefault,
-  // options: {
-  //   printer_location: print["printer-location"],
-  //   printer_make_and_model: print["printer-make-and-model"],
-  //   system_driverinfo: print.system_driverinfo,
-  // },
-  // });
-
-  //do something awesome that makes the world a better place
-
-  // Converting to JSON
 
   win.on("closed", () => (win = null));
 

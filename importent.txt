@@ -1,0 +1,20 @@
+
+ //** the core.js if you want to send this api
+  // res.forEach(async (element) => {
+        //   await fetch("http://localhost:8000/api/printers/", {
+        //     method: "post",
+        //     body: JSON.stringify({
+        //       name: element.name,
+        //       description: element.description,
+        //       status: element.status,
+        //       isDefault: element.isDefault,
+        //       options: {
+        //         printer_location: element.options["printer-location"],
+        //         printer_make_and_model:
+        //           element.options["printer-make-and-model"],
+        //         system_driverinfo: element.options.system_driverinfo,
+        //       },
+        //     }),
+        //     headers: { "Content-Type": "application/json" },
+        //   });
+        // });

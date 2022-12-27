@@ -104,15 +104,10 @@ export default {
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
+
+
   methods: {
-   async getPrinters(){
-    await window.versions.getPrinters()
-
-
-    },
-
     async printHandler() {
-
       this.rowData.forEach(element => {
         this.vocherRecapi += [{
           type: "text",
@@ -125,17 +120,16 @@ export default {
 
       });
 
-
-
       const options = {
-        preview: false,
+        preview: true,
         margin: '2px 2px 12px 2px',
         copies: 1,
-        printerName: 'EPSON TM-T88V Receipt',
+        printerName: 'tesat',
         timeOutPerLine: 400,
         pageSize: '80mm', // page size
         silent: true,
       }
+
       const options2 = {
         preview: true,
         margin: '2px 2px 12px 2px',
@@ -145,104 +139,30 @@ export default {
         pageSize: '80mm', // page size
         silent: true,
       }
+
       const data = [
         {
           type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-          value: 'هلا عمي ابو اسماعيل',
+          value: 'هلا عمي ابو ابراهيم',
           style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
         },
-        {
-          type: 'table',
-          style: { border: '12px solid #fff' },             // style the table
-          // list of the columns to be rendered in the table header
-          tableHeader: [{ type: 'text', value: 'Qty' }, { type: 'text', value: 'Description', style: { fontWeight: 'bold' } }, { type: 'text', value: 'price', style: { fontWeight: 'bold' } }],
-          // multi-dimensional array depicting the rows and columns of the table body
-          tableBody: [
-            ['Cat', 2, "sdsdds"],
 
-          ],
-
-          // list of columns to be rendered in the table footer
-          tableFooter: [{ type: 'text', value: 'Total' }, { type: 'text', value: '----' }, `${this.price + this.price * this.tax} JD`],
-          // custom style for the table header
-          tableHeaderStyle: { backgroundColor: 'white', color: '#000', 'font-weight': '100', 'border': '0.5px solid #000', },
-          // custom style for the table body
-          tableBodyStyle: { 'border': '0.5px solid #000', fontWeight: 'bold' },
-          // custom style for the table footer
-          tableFooterStyle: { backgroundColor: '#000', color: '#000', 'border': '0.5px solid #000', textAlign: 'center', fontSize: "20px" },
-
-        },
-      ]
-
-
+      ];
 
       const data2 = [
         {
           type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-          value: 'عمو شاورما',
+          value: 'هلا احمد,',
           style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
         },
-        {
-          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-          value: 1,
-          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
-        },
-        {
-          type: 'text',                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
-          value: 'Secondary text',
-          style: { textDecoration: "wavy  underline", fontSize: "17px", textAlign: "center", color: "#000" }
-        },
 
-
-        {
-          type: 'table',
-          style: { border: '12px solid #fff' },             // style the table
-          // list of the columns to be rendered in the table header
-          tableHeader: [{ type: 'text', value: 'Qty' }, { type: 'text', value: 'Description', style: { fontWeight: 'bold' } }, { type: 'text', value: 'price', style: { fontWeight: 'bold' } }],
-          // multi-dimensional array depicting the rows and columns of the table body
-          tableBody: [
-            ['Cat', 2, "sdsdds"],
-
-          ],
-
-          // list of columns to be rendered in the table footer
-          tableFooter: [{ type: 'text', value: 'Total' }, { type: 'text', value: '----' }, `${this.price + this.price * this.tax} JD`],
-          // custom style for the table header
-          tableHeaderStyle: { backgroundColor: 'white', color: '#000', 'font-weight': '100', 'border': '0.5px solid #000', },
-          // custom style for the table body
-          tableBodyStyle: { 'border': '0.5px solid #000', fontWeight: 'bold' },
-          // custom style for the table footer
-          tableFooterStyle: { backgroundColor: '#000', color: '#000', 'border': '0.5px solid #000', textAlign: 'center', fontSize: "20px" },
-
-        },
-        {
-          type: 'table',
-          // style the table
-          style: { border: '1px solid #ddd' },
-          // list of the columns to be rendered in the table header
-          // tableHeader: ['Animal', 'Age'],
-          // multi dimensional array depicting the rows and columns of the table body
-          tableBody: [
-            ['Cash', `${this.price + this.price * this.tax} JD`],
-            ['Change', `${this.current - (this.price + this.price * this.tax)}`],
-
-          ],
-          // list of columns to be rendered in the table footer
-          // tableFooter: ['Animal', 'Age'],
-          // custom style for the table header
-          tableHeaderStyle: { backgroundColor: '#000', color: 'white' },
-          // custom style for the table body
-          tableBodyStyle: { 'border': '0.5px solid #000', 'font-weight': '100' },
-          // custom style for the table footer
-          tableFooterStyle: { backgroundColor: '#000', color: 'white', 'border': '0.5px solid #000', textAlign: 'center', fontSize: "20px" },
-        },
       ];
 
+      await window.versions.printer2(options2, data2, "llslslslsls")
+
+      await window.versions.printer(options, data, "llslslslsls")
 
 
-      await window.versions.printer(options, data2, "llslslslsls")
-
-      // await window.versions.printer2(options2, data, "llslslslsls")
       // or any other ipcRenderer method you want to invoke
     },
 
@@ -329,7 +249,7 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+-->
 <style scoped>
 #calc {
 

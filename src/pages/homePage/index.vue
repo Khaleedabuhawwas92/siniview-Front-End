@@ -34,12 +34,14 @@
         .image
           img(src="../../assets/images/logo.png", width="300")
         #card3.card3
+
           v-btn-toggle.toggle(
             mandatory,
             v-model="toggle_one",
             borderless,
             color="lime darken-4"
           )
+
             v-btn.text-h4.toggle3(x-large, @click="hadelChangeColor") ديلفري
             v-btn.text-h4.toggle3(, x-large, @click="hadelChangeColor2") كاش
 
@@ -192,7 +194,6 @@
     v-overlay(color="#e17055")
 </template>
 <script >
-import { Config } from '../../config';
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: ["index"],
@@ -259,10 +260,17 @@ export default {
   async beforeMount() {
     // action stores.orders.getAllOrders
     await this.$store.dispatch("fetchMenu");
+    await window.versions.getPrinters()
+    await this.$store.dispatch("fetchPrinters");
+
+
+
+
   },
 
+
   computed: {
-    ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList"]),
+    ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList", "getPrinterList"]),
     rules() {
       return [
         this.chooeseItem.length > 0 || "At least one item should be selected",
@@ -352,6 +360,7 @@ export default {
       let card3 = document.getElementById("card3");
       console.log(this.items2.join("\r\n"));
       console.log(this.getMenuList);
+      console.log(this.getPrinterList);
       sidebar.classList.remove("bg-pan-right1");
       sidebar.classList.add("bg-pan-right");
       card3.classList.remove("bg-pan-right1");
@@ -477,6 +486,7 @@ export default {
     halooo(Tabindex, index) {
       if (index >= 0) {
         var my_object = new Object({
+          tab: this.items[Tabindex].id,
           allIetms: this.allIetms.push(
             this.items[Tabindex].product[index].title
           ),
@@ -677,7 +687,7 @@ export default {
   background: rgb(62, 65, 157);
   background: rgb(62, 65, 157);
   background: radial-gradient(circle,
-        rgb(251, 251, 251) 49%,
+      rgb(251, 251, 251) 49%,
         rgba(21, 129, 153, 0.656) 89%,
       rgba(9, 9, 121, 0) 98%);
   color: rgb(241, 236, 236);
