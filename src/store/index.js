@@ -31,10 +31,8 @@ export const actions = {
     commit("SET_MENU", response.data);
   },
   async fetchPrinters({ commit }) {
-    const response = await this.$axios.get(
-      "http://localhost:8000/api/printers"
-    );
-    commit("SET_MENU_PRINTERS", response.data);
+    const response = await window.versions.getPrinters();
+    commit("SET_MENU_PRINTERS", response);
   },
   async getUsers() {
     const users = await this.$axios.get(

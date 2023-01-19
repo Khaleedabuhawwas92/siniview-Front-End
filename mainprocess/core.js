@@ -1,3 +1,5 @@
+import { stringify } from "querystring";
+
 const _IS_DEV_MODE_ = process.env.NODE_ENV === "DEV" ? true : false;
 // const path = require("path");
 const fetch = require("node-fetch");
@@ -45,7 +47,7 @@ const makeAppWindow = () => {
   // };
 
   ipcMain.on("thermalPrinter1", function (event, options, data, content) {
-    win.webContents.handle("thermalPrinter1", options, data, content);
+    win.webContents.send("thermalPrinter1", options, data, content);
     PosPrinter.print(data, options)
       .then(console.log)
       .catch((error) => {
@@ -54,7 +56,7 @@ const makeAppWindow = () => {
   });
 
   ipcMain.on("thermalPrinter2", function (event, options, data, content) {
-    win.webContents.handle("thermalPrinter2", options, data, content);
+    win.webContents.send("thermalPrinter2", options, data, content);
     PosPrinter.print(data, options)
       .then(console.log)
       .catch((error) => {
@@ -62,15 +64,10 @@ const makeAppWindow = () => {
       });
   });
 
-  ipcMain.handle("getPrinters", async (event, content) => {
-    await win.webContents
-      .getPrintersAsync()
-      .then((res) => {
-        return res;
-      })
-      .catch((erorr) => {
-        console.log(erorr);
-      });
+  ipcMain.handle("getPrinters", async (event, ...args) => {
+    var dataTreated = await win.webContents.getPrintersAsync();
+    // console.log(dataTreated);
+    return dataTreated;
   });
 
   win.on("closed", () => (win = null));

@@ -1,14 +1,8 @@
 <template lang="pug">
-v-dialog(v-model="clickHandler", fullscreen="", hide-overlay="")
+.report-diloge.my-6
   v-card(tile="")
-    v-toolbar(dark, color="#012e48", height="100px", background-color="red")
-      v-btn(icon="", @click="clickHandler" ,ondblclick="")
-        v-icon mdi-close
-      v-toolbar-title.text-h4
-        | التقارير
-      v-spacer
-      .con
-        v-tabs(v-model="tab", centered, grow, dark, background-color="#2c3e50")
+    .con
+        v-tabs(v-model="tab", centered, grow, ,)
           v-tabs-slider(color="#e55039")
           v-tab.text-h4.tabs-style(v-for="item in items2", :key="item")
             | {{ item }}
@@ -287,6 +281,7 @@ export default {
 }
 .tabs-style {
   font-family: "GE-Hili" !important;
+  color: red;
 }
 
 .con {
@@ -295,5 +290,4 @@ export default {
   width: 40%;
   margin-right: 30%;
 }
-
 </style>

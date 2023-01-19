@@ -1,9 +1,7 @@
 <template lang="pug">
-v-dialog(v-model="clickHandler", fullscreen)
+.add-Tab
   v-card
     v-row.px-2(justify="space-between")
-      v-icon.pa-5(@click="clickHandler", x-large)
-        | mdi-close
       v-icon.pa-5(@click="openInput = true", x-large)
         | mdi-plus-box-multiple
     v-row(justify="center")

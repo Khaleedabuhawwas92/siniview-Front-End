@@ -34,7 +34,7 @@
       v-col.login-content
         v-card.rounded-xl.brand-card
           .barand-contint
-            img(src="../../assets/images/logo.png", alt="", width="280")
+            img(src="../../assets/images/logo.png", alt="", width="350")
             v-card-text.mx-0(align="center")
               | All rights reserved Mniview technologies co.
               br
@@ -53,9 +53,7 @@
 
 <script>
 export default {
-
   data() {
-
     return {
       success: true,
       error: "",

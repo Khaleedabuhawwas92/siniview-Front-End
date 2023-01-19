@@ -9,31 +9,19 @@
     background-color="#012e48",
     dark
   )
+
     v-btn(@click="dialogClose = true")
       span(v-GE-Hili-font, v-fontSize.bold.color="20") خروج
-    v-menu(offset-y)
-      template(v-slot:activator="{ on, attrs }")
-        v-btn
-          span(
-            v-GE-Hili-font,
-            v-fontSize.bold.color="20",
-            v-bind="attrs",
-            v-on="on"
-          ) اعدادات
-
-      v-list
-        v-list-item(v-for="(item, index) in itemsv", :key="index")
-          v-list-item-title.pa-5.hover-title(@click="con(item, index)")
-            | {{ item.title }}
-
-    v-btn(@click="dialogReport = true", @dblclick="dialogReport = false")
-      span(v-GE-Hili-font, v-fontSize.bold.color="20") التقارير
-
     v-btn(@click="dialogExpenses = true")
       span(v-GE-Hili-font, v-fontSize.bold.color="20") المصاريف
 
     v-btn(@click="dialogPurchases = true")
       span(v-GE-Hili-font, v-fontSize.bold.color="20") المشتريات
+    v-btn(@click="")
+      span(v-GE-Hili-font, v-fontSize.bold.color="20")
+        NuxtLink(to="/adminPage") لوحة التحكم
+
+
 
   v-card.mt-15(v-model="toggleOne", color="#DDD0D0")
     v-tabs#tabs.tabs(v-model="tab", grow, dark, background-color="#012e48")
@@ -69,12 +57,12 @@
                   .price1
                     v-card-text.text-h6.card-text {{ items.price }} JD
 
-  <reportDialgog :dialogReport="dialogReport"  @toggle="dialogReport = !dialogReport" v-if="dialogReport" />
+
   <expensesDialog :dialogExpenses="dialogExpenses"  @toggle="dialogExpenses = !dialogExpenses" v-if="dialogExpenses" />
   <purchasesDialog :dialogPurchases="dialogPurchases"  @toggle="dialogPurchases = !dialogPurchases" v-if="dialogPurchases" />
   <exitDialog :dialogClose="dialogClose"  @toggle="exit" v-if="dialogClose" :test="loggedInUser.name" />
-  <addTabs :addtabs="itemsv[0].path"  @toggle="itemsv[0].path = !itemsv[0].path" v-if="itemsv[0].path" />
-  <printinng :dialogPrinter="itemsv[1].path"  @toggle="itemsv[1].path = !itemsv[1].path" v-if="itemsv[1].path" />
+  //- <addTabs :addtabs="itemsv[0].path"  @toggle="itemsv[0].path = !itemsv[0].path" v-if="itemsv[0].path" />
+  //- <printinng :dialogPrinter="itemsv[1].path"  @toggle="itemsv[1].path = !itemsv[1].path" v-if="itemsv[1].path" />
 </template>
 <script>
 import { mapGetters } from "vuex";
@@ -83,12 +71,10 @@ export default {
   data() {
     return {
       ooo: "khaleed",
-      itemsv: [
-        { title: "اضافة قائمة", path: false },
-        { title: "اضافة طابعة", path: false },
-        { title: "تعريف طابعة", path: false },
-        { title: "اضاقة مادة ", path: false },
-      ],
+      // itemsv: [
+      //   { title: "اضافة قائمة", path: false },
+      //   { title: "اضافة طابعة", path: false },
+      // ],
 
       dialogReport: false,
       dialogPurchases: false,
@@ -186,7 +172,7 @@ export default {
     align-items: center;
 
     .user-photo {
-        position: absolute;
+      position: absolute;
         right: 0;
         overflow: hidden;
         width: 80px !important;

@@ -187,11 +187,12 @@
       )
         <Calculator :price="price"  @toggle="colseToggle" :rowData="rowData" :allIetms="allIetms" :additions="additions" :toggleOne="toggle_one" />
   v-dialog(max-width="600", v-model="errorMassege")
+    v-overlay(color="#e17055")
     v-card.text-center(color="#d63031")
-      v-toolbar(color="red", background="red") ERORR MASSEGE
+      v-toolbar(color="red", background="red") خطا
       v-card-text.massegeErorr.text-center
         .text-h2.pa-12.ma-auto لايوجد طلبات للطباعة
-    v-overlay(color="#e17055")
+
 </template>
 <script >
 import { mapGetters, mapMutations } from "vuex";
@@ -258,14 +259,9 @@ export default {
     };
   },
   async beforeMount() {
-    // action stores.orders.getAllOrders
     await this.$store.dispatch("fetchMenu");
     await window.versions.getPrinters()
     await this.$store.dispatch("fetchPrinters");
-
-
-
-
   },
 
 
@@ -384,6 +380,7 @@ export default {
     colseToggle2() {
       this.dialogInvoice = false;
       this.current = "";
+
     },
     // fill the data to item2 array
     fillItems() {
@@ -428,6 +425,7 @@ export default {
           this.delete1 = true;
         }
       }
+
     },
 
     return1(index1) {
@@ -487,6 +485,7 @@ export default {
       if (index >= 0) {
         var my_object = new Object({
           tab: this.items[Tabindex].id,
+          printerName: this.items[Tabindex].printerName,
           allIetms: this.allIetms.push(
             this.items[Tabindex].product[index].title
           ),
@@ -494,7 +493,6 @@ export default {
           discraption: this.items[Tabindex].product[index].discraption,
           additions: {},
           title: this.items[Tabindex].product[index].title,
-
           price: Number(this.items[Tabindex].product[index].price),
           sum:
             this.price +
@@ -535,6 +533,7 @@ export default {
       new Audio(
         "http://commondatastorage.googleapis.com/codeskulptor-assets/week7-brrring.m4a"
       ).play();
+      this.vocherRecapi = [];
       this.delete1 = false;
       this.allIetms.splice(0);
       this.rowData.splice(0);
@@ -688,7 +687,7 @@ export default {
   background: rgb(62, 65, 157);
   background: radial-gradient(circle,
       rgb(251, 251, 251) 49%,
-        rgba(21, 129, 153, 0.656) 89%,
+      rgba(21, 129, 153, 0.656) 89%,
       rgba(9, 9, 121, 0) 98%);
   color: rgb(241, 236, 236);
   width: 100%;

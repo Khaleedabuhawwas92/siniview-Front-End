@@ -1,17 +1,12 @@
-<template lang="pug" ref="template">
-v-dialog(v-model="clickHandler", max-width="400", persistent)
+<template lang="pug">
+.printing
   v-card
-    v-card-title.text-center تعريف الطابعات
-    v-container(fluid='')
+    v-card-title.title1.text-h3 تعريف الطابعات
       v-row(align='center')
-        v-col(cols='12',v-for="(item, index) in getMenuList", :key="index")
+        v-col(cols='4',v-for="(item, index) in getMenuList", :key="index")
           v-card-title.text-h3 {{ item.tab }}
-          v-autocomplete(v-model='item.index' :items='items' dense='' filled='' autofocus  )
-      v-btn.button-style(:loading="loading",
-      color="green"
-        class="ma-1"
-        @click="savePrinter(item.id,items.name)")  حفظ
-      v-btn.button-style(@click="clickHandler", color="red") اغلاق
+            v-autocomplete(v-model='item.index' :items='items' dense='' :label="item.printerName" filled='' @change="savePrinter(item.id,item.index)")
+
 
 </template>
 <script>
@@ -36,36 +31,36 @@ export default {
 
     };
   },
+
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList", "getPrinterList"]),
-
   },
 
   mounted() {
     this.getPrinters()
+    this.$nuxt.refresh()
   },
 
   methods: {
     async savePrinter(id, name) {
-      // this.loading = true
-      // this.$axios.put("/printers/" + id, {
-      //   printerName: this.printerName
-      // }).then(function (response) {
-      //   console.log(response);
-      //   this.$nuxt.refresh()
-      // }).catch(function (error) {
-      //   console.log(error);
-      // })
-      // await new Promise(resolve => setTimeout(resolve, 3000))
-      // this.loading = false
+      this.$axios.post("/items/updateprinter/" + id, {
+        printerName: name
+      }).then(function (response) {
+        console.log(response.data);
+
+      }).catch(function (error) {
+        console.log(error);
+      })
+
       console.log(id, name);
-      this.clickHandler();
+
     },
     onPrinterChange: function (value) {
     },
     async getPrinters() {
       this.getPrinterList.forEach(element => {
         this.items.push(element.name)
+
       });
     },
     exportHTM: function () {
@@ -73,7 +68,6 @@ export default {
     getHTML: function () {
     },
     clickHandler(e) {
-
       this.$emit("toggle");
     },
 
@@ -88,7 +82,10 @@ export default {
 * {
   z-index: 100;
   font-size: 9px;
-  font-family: 'Times New Roman';
+}
+
+.title1 {
+  font-family: "GE-Hili" !important;
 }
 
 @media print {
@@ -96,6 +93,7 @@ export default {
   .hidden-print,
   .hidden-print * {
     display: none !important;
+    font-family: "GE-Hili" !important;
   }
 }
 </style>

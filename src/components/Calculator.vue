@@ -22,7 +22,7 @@
         <!-- <button id="comma" @click="comma">.</button> -->
         <button id="0" @click="buttonClick(0)">0</button>
         <button @click="clear">C</button>
-        <button id="equals" @click="printHandler()">Enter</button>
+        <button id="equals" @click="equals()">Enter</button>
         <!-- <button @click="getPrinters()">get Printers</button> -->
 
       </div>
@@ -34,7 +34,7 @@
         <v-card class="text-center ">
           <v-toolbar color="#dfe6e9" class="text-h2 title" v-GE-Hili-font>الباقي</v-toolbar>
           <v-card-text>
-            <div class="text-h2 pa-12">{{ current }}</div>e
+            <div class="text-h2 pa-12">{{ current }}</div>
           </v-card-text>
           <v-card-actions class="justify-end">
             <v-btn @click="confarim">تاكيد</v-btn>
@@ -52,23 +52,9 @@
 
 <script>
 import { mapGetters } from "vuex";
-import printinng from './printinng.vue';
-// import job from '../examples/getPrinters';
-// const { spawn } = require('child_process');
-
-// import { exec } from 'child_process';
-
-var events = require('events');
-
-
-
-
-
 const path = require("path");
 
 
-
-// const electron = typeof process !== 'undefined' && process.versions && !!process.versions.electron;
 
 
 export default {
@@ -85,6 +71,7 @@ export default {
     return {
       dialogPrinter: true,
       in: 0,
+      sumation: 0,
       vv: [],
       dialog5: false,
       dialog2: false,
@@ -98,9 +85,16 @@ export default {
       jspmAppInstances: null,
       clientPrinters: null,
       markDownData: "",
-      vocherRecapi: []
+      vocherRecapi: [],
+      printerName: ''
     };
   },
+  async beforeMount() {
+    await this.$store.dispatch("fetchMenu");
+
+  },
+
+
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
   },
@@ -108,24 +102,24 @@ export default {
 
   methods: {
     async printHandler() {
-      this.rowData.forEach(element => {
-        this.vocherRecapi += [{
-          type: "text",
-          value: element.title
 
-        }, {
-          type: "text",
-          value: element.price
-        }]
 
+      await this.rowData.forEach(element => {
+        this.vocherRecapi.push([element.title, element.price, "1",
+
+
+        ])
+        this.sumation += element.price
+        this.printerName = element.printerName
       });
+
 
       const options = {
         preview: true,
-        margin: '2px 2px 12px 2px',
+        margin: '0 2px ',
         copies: 1,
-        printerName: 'tesat',
-        timeOutPerLine: 400,
+        printerName: "EPSON TM-T88V Receipt",
+        timeOutPerLine: 50,
         pageSize: '80mm', // page size
         silent: true,
       }
@@ -140,27 +134,132 @@ export default {
         silent: true,
       }
 
-      const data = [
-        {
-          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-          value: 'هلا عمي ابو ابراهيم',
-          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
-        },
 
-      ];
 
       const data2 = [
         {
           type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
-          value: 'هلا احمد,',
-          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", backgroundColor: '#fff', color: '#000', margin: '0 0 12px 0', fontWeight: 'bold' }
+          value: this.toggleOne === 1 ? "كاش" : "ديلفري",
+          style: { fontWeight: "700", textAlign: 'center', fontSize: "20px", margin: ' 20px' }
         },
+        {
+          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+          value: 'طلب رقم',
+          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px", margin: ' 20px' }
+        },
+        {
+          type: 'table',
+          // style the table
+          style: { border: '3px solid #000', color: '#000' },
+          // list of the columns to be rendered in the table header
+          tableHeader: ['الصنف', 'السعر', "الكمية"],
+          // multi dimensional array depicting the rows and columns of the table body
+          tableBody: this.vocherRecapi,
+          // list of columns to be rendered in the table footer
+          tableFooter: [{
+            type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+            value: this.sumation,
+            style: { fontWeight: "700", textAlign: 'center', fontSize: "15px", margin: ' 20px' }
+          }, {
+            type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+            value: 'المجموع',
+            style: { fontWeight: "700", textAlign: 'left', fontSize: "15px", margin: '20px' }
+          }],
+          // custom style for the table header
+          tableHeaderStyle: { backgroundColor: '#000', color: '#000' },
+          // custom style for the table body
+          tableBodyStyle: { 'border': '3px solid #000', 'color': '#000', 'font-weight': "bold", textAlign: 'left' },
+          // custom style for the table footer
+          tableFooterStyle: { backgroundColor: '#fff', color: '#000', },
+        },
+        // {
+        //   type: 'image', url: "../../assets/images/logo.png", position: 'center',                                  // position of image: 'left' | 'center' | 'right'
+        //   width: '160px',                                           // width of image in px; default: auto
+        //   height: '60px',
+        // }
+      ]
+      const data = [
+        {
+          type: 'image',
+          url: 'https://randomuser.me/api/portraits/men/43.jpg',     // file path
+          position: 'center',                                  // position of image: 'left' | 'center' | 'right'
+          width: '160px',                                           // width of image in px; default: auto
+          height: '60px',                                          // width of image in px; default: 50 or '50px'
+        }, {
+          type: 'text',                                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table
+          value: 'SAMPLE HEADING',
+          style: { fontWeight: "700", textAlign: 'center', fontSize: "24px" }
+        }, {
+          type: 'text',                       // 'text' | 'barCode' | 'qrCode' | 'image' | 'table'
+          value: 'Secondary text',
+          style: { textDecoration: "underline", fontSize: "10px", textAlign: "center", color: "red", }
+        }, {
+          type: 'barCode',
+          value: '023456789010',
+          height: 40,                     // height of barcode, applicable only to bar and QR codes
+          width: 2,                       // width of barcode, applicable only to bar and QR codes
+          displayValue: true,             // Display value below barcode
+          fontsize: 12,
+        }, {
+          type: 'qrCode',
+          value: 'https://www.freepik.com/',
+          height: 55,
+          width: 55,
+          style: { margin: '10 20px 20 20px' }
+        }, {
+          type: 'table',
+          // style the table
+          style: { border: '1px solid #ddd' },
+          // list of the columns to be rendered in the table header
+          tableHeader: ['Animal', 'Age'],
+          // multi dimensional array depicting the rows and columns of the table body
+          tableBody: [
+            ['Cat', 2],
+            ['Dog', 4],
+            ['Horse', 12],
+            ['Pig', 4],
+          ],
+          // list of columns to be rendered in the table footer
+          tableFooter: ['Animal', 'Age'],
+          // custom style for the table header
+          tableHeaderStyle: { backgroundColor: '#000', color: 'white' },
+          // custom style for the table body
+          tableBodyStyle: { 'border': '0.5px solid #ddd' },
+          // custom style for the table footer
+          tableFooterStyle: { backgroundColor: '#000', color: 'white' },
+        }, {
+          type: 'table',
+          style: { border: '1px solid #ddd' },             // style the table
+          // list of the columns to be rendered in the table header
+          tableHeader: [{ type: 'text', value: 'People' },],
+          // multi-dimensional array depicting the rows and columns of the table body
+          tableBody: [
+            [{ type: 'text', value: 'Marcus' }, { type: 'image', url: 'https://randomuser.me/api/portraits/men/43.jpg' }],
+            [{ type: 'text', value: 'Boris' }, { type: 'image', url: 'https://randomuser.me/api/portraits/men/41.jpg' }],
+            [{ type: 'text', value: 'Andrew' }, { type: 'image', url: 'https://randomuser.me/api/portraits/men/23.jpg' }],
+            [{ type: 'text', value: 'Tyresse' }, { type: 'image', url: 'https://randomuser.me/api/portraits/men/53.jpg' }],
+          ],
+          // list of columns to be rendered in the table footer
+          tableFooter: [{ type: 'text', value: 'People' }, 'Image'],
+          // custom style for the table header
+          tableHeaderStyle: { backgroundColor: 'red', color: 'white' },
+          // custom style for the table body
+          tableBodyStyle: { 'border': '0.5px solid #ddd' },
+          // custom style for the table footer
+          tableFooterStyle: { backgroundColor: '#000', color: 'white' },
+        },
+      ]
 
-      ];
+      // await window.versions.printer2(options2, data, "llslslslsls")
+      if (this.toggleOne === 1) {
+        await window.versions.printer(options, data2, "llslslslsls")
+      } else {
+        await window.versions.printer(options, data2, "llslslslsls")
+        await window.versions.printer(options, data2, "llslslslsls")
 
-      await window.versions.printer2(options2, data2, "llslslslsls")
+      }
 
-      await window.versions.printer(options, data, "llslslslsls")
+      this.vocherRecapi = []
 
 
       // or any other ipcRenderer method you want to invoke
@@ -206,6 +305,7 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+      this.printHandler(this.toggleOne);
 
       this.current = "";
 
@@ -233,7 +333,7 @@ export default {
       this.dialog5 = true;
       console.log("......................................");
       console.log(this.allIetms);
-      this.printHandler();
+
     },
     comma() {
 
@@ -249,7 +349,7 @@ export default {
 };
 </script>
 
--->
+
 <style scoped>
 #calc {
 
@@ -272,6 +372,7 @@ export default {
 .buttons {
   display: grid;
   direction: rtl;
+
 }
 
 button {
