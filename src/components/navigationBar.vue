@@ -19,7 +19,7 @@
       span(v-GE-Hili-font, v-fontSize.bold.color="20") المشتريات
     v-btn(@click="")
       span(v-GE-Hili-font, v-fontSize.bold.color="20")
-        NuxtLink(to="/adminPage") لوحة التحكم
+        NuxtLink(to="/adminPage").linke لوحة التحكم
 
 
 
@@ -146,6 +146,10 @@ export default {
   font-family: "GE-Hili";
   font-weight: bold;
   font-size: 25px;
+}
+.linke {
+  text-decoration: none;
+  color: #dfe6e9;
 }
 
 @font-face {

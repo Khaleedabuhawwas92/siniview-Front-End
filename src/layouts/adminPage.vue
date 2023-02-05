@@ -4,6 +4,7 @@
   </v-app>
 </template>
 <script>
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -11,15 +12,27 @@ export default {
 
     };
   },
-  methods: {},
+  asyncData() {
+    this.$store.dispatch("fetchMenu");
+  },
+  computed: {
+    ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList", "getPrinterList"]),
+  },
+  async beforeMount() {
+    await this.$store.dispatch("fetchMenu");
+    console.log(this.getMenuList);
+
+  },
+
 };
+
 
 </script>
 
 
 <style scoped>
 .admin {
-  font-family: "GE-Hili" !important;
+  /* font-family: "GE-Hili" !important; */
 }
 
 * {}

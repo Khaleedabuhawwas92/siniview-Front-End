@@ -32,7 +32,7 @@
     v-tab-item
       <printinng />
     v-tab-item
-      <addTabs />
+      <addTabs :getMenuList=getMenuList />
     v-tab-item
       <reportDialgog />
 
@@ -40,10 +40,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   layout: "adminPage",
-
-
   data() {
     return {
 
@@ -52,7 +51,22 @@ export default {
 
     }
   },
+  async beforeMount() {
+    await this.$store.dispatch("fetchMenu");
+    await window.versions.getPrinters()
+    await this.$store.dispatch("fetchPrinters");
+  },
 
+
+
+  computed: {
+    ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList"]),
+  },
+  async fetch() {
+    await this.$axios.get(`/items`).then((result) => {
+      this.items = result.data;
+    });
+  },
 
   methods: {
     changeRTL() {
@@ -60,15 +74,11 @@ export default {
     },
   }
 }
-
-
-
-
 </script>
 <style  scoped>
 /* Please ❤ this if you like it! */
 
-html {}
+
 
 body {
   background: red;
@@ -78,6 +88,7 @@ body {
   font-family: "GE-Hili" !important;
   font-size: 15px;
   font-weight: bold;
+
 }
 
 .toolbar {

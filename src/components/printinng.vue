@@ -1,21 +1,15 @@
 <template lang="pug">
 .printing
   v-card
-    v-card-title.title1.text-h3 تعريف الطابعات
-      v-row(align='center')
-        v-col(cols='4',v-for="(item, index) in getMenuList", :key="index")
+    v-row(align='center')
+      v-col(cols='4',v-for="(item, index) in list", :key="index")
           v-card-title.text-h3 {{ item.tab }}
-            v-autocomplete(v-model='item.index' :items='items' dense='' :label="item.printerName" filled='' @change="savePrinter(item.id,item.index)")
-
-
+          v-autocomplete(v-model='item.index' :items='items' dense='' :label="item.printerName" filled='' @change="savePrinter(item.id,item.index)")
 </template>
 <script>
 import { mapGetters } from "vuex";
-
-
 // import fs from 'fs'
 export default {
-
   props: ["dialogPrinter", "test"],
   data() {
     return {
@@ -27,27 +21,38 @@ export default {
       print2default: false,
       printers: [],
       windowRef: null,
-      selected_printer: ''
-
+      selected_printer: '',
+      list: [],
     };
   },
 
+
+
+
   computed: {
-    ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList", "getPrinterList"]),
+    ...mapGetters(["isAuthenticated", "loggedInUser", "getPrinterList"]),
   },
+
 
   mounted() {
     this.getPrinters()
     this.$nuxt.refresh()
   },
 
+  async fetch() {
+    await this.$axios.get(`/items`).then((res) => {
+      this.list = res.data
+
+    })
+
+  },
   methods: {
     async savePrinter(id, name) {
       this.$axios.post("/items/updateprinter/" + id, {
         printerName: name
       }).then(function (response) {
         console.log(response.data);
-
+        this.$store.dispatch("fetchMenu");
       }).catch(function (error) {
         console.log(error);
       })
@@ -55,30 +60,20 @@ export default {
       console.log(id, name);
 
     },
-    onPrinterChange: function (value) {
-    },
+
     async getPrinters() {
       this.getPrinterList.forEach(element => {
         this.items.push(element.name)
 
       });
     },
-    exportHTM: function () {
-    },
-    getHTML: function () {
-    },
     clickHandler(e) {
       this.$emit("toggle");
     },
-
-    close: function () {
-    },
-    print() {
-    }
   },
 };
 </script>
-<style  scoped>
+<style scoped>
 * {
   z-index: 100;
   font-size: 9px;
@@ -86,6 +81,7 @@ export default {
 
 .title1 {
   font-family: "GE-Hili" !important;
+  font-weight: bold;
 }
 
 @media print {

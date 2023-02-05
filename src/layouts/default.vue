@@ -1,8 +1,10 @@
 <template>
   <div>
     <v-app>
-      <errorMassege v-if="$nuxt.isOffline" />
-      <nuxt v-else />
+      <v-responsive :aspect-ratio="16 / 9">
+        <errorMassege v-if="$nuxt.isOffline" />
+        <nuxt v-else />
+      </v-responsive>
     </v-app>
   </div>
 </template>
@@ -12,6 +14,9 @@ export default {
     return {
       alert2: false,
     };
+  },
+  asyncData() {
+    this.$store.dispatch("fetchMenu");
   },
   methods: {},
 };

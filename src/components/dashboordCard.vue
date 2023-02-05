@@ -4,21 +4,26 @@
     v-icon(x-large).icon {{icons}}
   p.pa-5.title-card {{ massege }}   {{ conutNumber }} طلب
   v-divider
-  v-subheader.subheader في اخر 24 ساعة
-
-
-
+  v-subheader.mb-3.subheader في اخر 24 ساعة
 
 </template>
 <script>
 export default {
   props: ["massege", "icons", "conutNumber"],
-  methods: {
 
+  data() {
+    return {
+      mini: true,
+      tab: null,
+      v1: 0
+    }
   },
+
 };
+
 </script>
-<style lang="scss">
+
+<style scoped lang="scss" >
 * {
   font-family: "GE-Hili" !important;
 }
@@ -32,6 +37,8 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   position: relative;
   border-radius: 6px;
+  border-bottom: 3px solid black;
+    border-right: 3px solid black;
 
   .sub-card {
     position: absolute;
@@ -39,7 +46,7 @@ export default {
     height: 100px;
     bottom: 81px;
     left: 22px;
-    background-color: #55efc4;
+    background-color: #2d3436;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 6px;
 
@@ -60,8 +67,9 @@ export default {
     font-weight: bold;
     color: #000;
     font-size: 30px;
-    text-shadow: 2px 2px #2f2e2e;
+
   }
+
 
 }
 </style>

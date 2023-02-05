@@ -1,6 +1,6 @@
 <template lang="pug">
 .homePage
-  <navigationBar  :items="items" @toggle="halooo" :price="price" :toggleOne= "toggle_one"  />
+  <navigationBar :items="items" @toggle="halooo" :price="price" :toggleOne= "toggle_one"  />
   <alertSuccess massege="تمت العملية بنجاح"  @toggle="showSuccessAlert" v-if="success" />
   v-tabs.commint-order(
     background-color="#e74c3c",
@@ -267,11 +267,6 @@ export default {
 
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser", "getMenuList", "getPrinterList"]),
-    rules() {
-      return [
-        this.chooeseItem.length > 0 || "At least one item should be selected",
-      ];
-    },
   },
   // "http://192.168.1.41:8000/api/items"
 
